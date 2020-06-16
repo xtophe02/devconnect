@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          # imagePullPolicy: Never
+          # image: us.gcr.io/ticketing-dev/auth
+          image: xtophe02/devconnector-api
+          # env:
+          #   - name: JWT_KEY
+          #     valueFrom:
+          #       secretKeyRef:
+          #         name: jwt-secret
+          #         key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-srv
+spec:
+  # type: NodePort
+  selector:
+    app: api
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: api
+      # nodePort: 31515
