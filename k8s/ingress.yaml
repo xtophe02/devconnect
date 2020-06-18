@@ -17,5 +17,5 @@ spec:
               servicePort: 3000
           - path: /graphql/?(.*)
             backend:
-              serviceName: api-srv
+              serviceName: api-gateway-srv
               servicePort: 4000

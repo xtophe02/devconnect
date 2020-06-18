@@ -1,5 +1,10 @@
 MICROSERVICES
 
+- typescript
+- skaffold
+- kubernetes
+- apollo federation
+
 client
 
 - nextjs
