@@ -1,35 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-dep
+  name: users-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: users
   template:
     metadata:
       labels:
-        app: auth
+        app: users
     spec:
       containers:
-        - name: auth
+        - name: users
           # imagePullPolicy: Never
           # image: us.gcr.io/ticketing-dev/auth
-          image: xtophe02/devconnector-auth
+          image: xtophe02/devconnector-users
           env:
-            - name: NATS_CLIENT_ID
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: NATS_URL
-              value: 'http://nats-srv:4222'
-            - name: NATS_CLUSTER_ID
-              value: devconnect
             - name: PORT
               value: '4000'
             - name: MONGO_URI
-              value: 'mongodb://auth-mongo-srv:27017/auth'
+              value: 'mongodb://auth-mongo-srv:27017/users'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
@@ -39,14 +31,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: users-srv
 spec:
   # type: NodePort
   selector:
-    app: auth
+    app: users
   ports:
     - port: 4000
       targetPort: 4000
       protocol: TCP
-      name: auth
+      name: users
       # nodePort: 31515
