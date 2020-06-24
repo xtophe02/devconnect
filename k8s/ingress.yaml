@@ -15,7 +15,7 @@ spec:
             backend:
               serviceName: client-srv
               servicePort: 3000
-          - path: /graphql/auth/?(.*)
+          - path: /graphql/?(.*)
             backend:
-              serviceName: auth-srv
+              serviceName: api-gateway-srv
               servicePort: 4000

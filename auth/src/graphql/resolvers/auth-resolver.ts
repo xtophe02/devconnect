@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken';
+import { UserCreatedPublisher } from '../../events/user-created-publisher';
 
-import { User, UserAttrs } from '../../models/user';
+import { User } from '../../models/user';
 import { Password } from '../../utils/password';
+import { natsWrapper } from '../../nats-wrapper';
 
 interface UserPayload {
   id: string;
@@ -10,7 +12,20 @@ interface UserPayload {
 
 const resolvers = {
   Query: {
-    hello: () => 'Hello World',
+    hello: (root: any, args: any, ctx: any) => {
+      // console.log(Object.keys(ctx));
+      // console.log(Object.keys(ctx.req));
+      // console.log(ctx.req.headers);
+      ctx.req.session = { jwt: 'ola' };
+      return 'Hello World';
+    },
+    hello2: (root: any, args: any, ctx: any) => {
+      // console.log(Object.keys(ctx.req));
+      // console.log('session', ctx.req.session);
+      // console.log('headers', ctx.req.headers);
+
+      return 'Hello World 2';
+    },
     currentUser: async (root: any, { data }: any, { req, res }: any) => {
       if (!req.session?.jwt) {
         return;
@@ -37,15 +52,24 @@ const resolvers = {
         name,
         username,
       });
+      //THE SAVE AND PUBLIHSHER SHOULD BE DONE IN MONGODB TRANSACTION
       await user.save();
-      console.log(user);
+
+      new UserCreatedPublisher(natsWrapper.client).publish({
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt.toISOString(),
+      });
       const userJwt = jwt.sign(
         { id: user.id, email: user.email },
         process.env.JWT_KEY!
       );
 
       req.session = { jwt: userJwt };
-      return { email: user.email };
+      console.log('user:', user);
+      return { user };
     },
     signIn: async (root: any, { data }: any, { req, res }: any) => {
       //TODO inputs validation

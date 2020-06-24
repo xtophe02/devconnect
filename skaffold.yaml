@@ -23,14 +23,14 @@ build:
             dest: .
           - src: '**/*.js'
             dest: .
-    # - image: xtophe02/devconnector-api-gateway
-    #   context: api-gateway
-    #   docker:
-    #     dockerfile: Dockerfile
-    #   sync:
-    #     manual:
-    #       - src: 'src/**/*.js'
-    #         dest: .
+    - image: xtophe02/devconnector-api-gateway
+      context: api-gateway
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
     - image: xtophe02/devconnector-auth
       context: auth
       docker:

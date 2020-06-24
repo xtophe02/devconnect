@@ -35,7 +35,7 @@ const IndexPage = () => {
       <Link href='/signin' color='secondary'>
         Go to the sing in page
       </Link>
-      {error}
+      {JSON.stringify(error)}
     </Container>
   );
 };

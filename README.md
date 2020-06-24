@@ -3,13 +3,17 @@ MICROSERVICES
 - typescript
 - skaffold
 - kubernetes
-- apollo federation
 
 client
 
 - nextjs
 - material-ui
+- apollo
 
-API
+auth
 
 - apollo-server-express
+- cookie-session
+- mongodb
+- mongoose
+- nat streaming

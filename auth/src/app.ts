@@ -1,6 +1,7 @@
 import express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import cookieSession from 'cookie-session';
+import { buildFederatedSchema } from '@apollo/federation';
 
 import { typeDefs } from './graphql/typeDefs';
 import { resolvers } from './graphql/resolvers/auth-resolver';
@@ -18,11 +19,21 @@ app.use(
 );
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: (ctx) => ctx,
+  schema: buildFederatedSchema([
+    {
+      typeDefs,
+      resolvers,
+    },
+  ]),
+
+  context: ({ req, res }) => {
+    return {
+      req,
+      res,
+    };
+  },
 });
 
-server.applyMiddleware({ app, path: '/graphql/auth' });
+server.applyMiddleware({ app });
 
 export { app };

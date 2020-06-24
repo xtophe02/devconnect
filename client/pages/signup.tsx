@@ -12,19 +12,21 @@ const SIGNUP = gql`
 `;
 
 const SignUp = () => {
-  const [signUp, { data }] = useMutation(SIGNUP);
+  const [signUp, { data }] = useMutation(SIGNUP, {
+    onCompleted: (data) => console.log(data),
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     signUp({
       variables: {
         data: {
-          email: 'christophe.moreira@outlook.com',
+          email: 'christophe.moreira@outlook.com3',
           password: 'password',
           name: 'Christophe Moreira',
           username: 'chrismo',
         },
       },
-      onCompleted: (data) => console.log(data),
+      // onCompleted: (data) => console.log(data),
     });
   };
 

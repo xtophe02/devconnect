@@ -1,11 +1,12 @@
 import gql from 'graphql-tag';
 
 const typeDefs = gql`
-  type Query {
+  extend type Query {
     hello: String
+    hello2: String
     currentUser: User
   }
-  type Mutation {
+  extend type Mutation {
     signUp(data: SignUpInput!): User!
     signIn(data: SignInInput!): User!
   }
