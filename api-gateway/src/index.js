@@ -14,6 +14,7 @@ class AuthenticatedDataSource extends RemoteGraphQLDataSource {
   }
   willSendRequest({ request, context }) {
     if (context && context.req) {
+      console.log(context.req.headers);
       request.http.headers.set('token', context.req.headers.cookie);
     }
 

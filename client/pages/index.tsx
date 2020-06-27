@@ -1,25 +1,28 @@
 import { Container, Typography } from '@material-ui/core';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 
 import Link from '../src/Link';
 import { initializeApollo } from '../apollo/client';
 
-const HELLO = gql`
-  query Hello {
-    hello
-  }
-`;
-// const CURRENTUSER = gql`
-//   query {
-//     currentUser {
-//       email
-//     }
+// const HELLO = gql`
+//   query Hello {
+//     hello
 //   }
 // `;
+const CURRENTUSER = gql`
+  query {
+    currentUser {
+      email
+    }
+  }
+`;
 
 const IndexPage = () => {
-  const { loading, error, data } = useQuery(HELLO);
+  const { loading, error, data } = useQuery(CURRENTUSER, {
+    fetchPolicy: 'network-only',
+  });
+
   // const { loading, error, data } = useQuery(CURRENTUSER, {
   //   fetchPolicy: 'network-only',
   // });
@@ -32,10 +35,10 @@ const IndexPage = () => {
   return (
     <Container>
       <Typography variant='h3' color='primary'>
-        {data.hello ? data.hello : 'nok'}
-        {/* {data && data.currentUser?.email
+        {/* {data && data.hello ? data.hello : 'nok'} */}
+        {data && data.currentUser?.email
           ? data.currentUser?.email
-          : 'please to sign'} */}
+          : 'please to sign'}
       </Typography>
       <Link href='/signup' color='secondary'>
         Go to the sing up page

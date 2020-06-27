@@ -3,7 +3,6 @@ import gql from 'graphql-tag';
 const typeDefs = gql`
   extend type Query {
     hello: String
-    hello2: String
     currentUser: User
   }
   extend type Mutation {
