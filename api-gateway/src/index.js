@@ -1,26 +1,36 @@
-const { ApolloServer } = require("apollo-server");
-const { ApolloGateway, RemoteGraphQLDataSource } = require("@apollo/gateway");
+const { ApolloServer } = require('apollo-server');
+const { ApolloGateway, RemoteGraphQLDataSource } = require('@apollo/gateway');
+
+class AuthenticatedDataSource extends RemoteGraphQLDataSource {
+  didReceiveResponse({ request, response, context }) {
+    const cookie = response.http.headers.get('set-cookie');
+    if (cookie) {
+      if (context && context.res) {
+        // console.log(Object.keys(context.res));
+        context.res.cookie(cookie);
+      }
+    }
+    return response;
+  }
+  willSendRequest({ request, context }) {
+    if (context && context.req) {
+      request.http.headers.set('token', context.req.headers.cookie);
+    }
+
+    return context;
+  }
+}
 
 const gateway = new ApolloGateway({
-  serviceList: [{ name: "auth", url: process.env.AUTH_URL }],
+  serviceList: [{ name: 'auth', url: process.env.AUTH_URL }],
   buildService({ url }) {
-    return new RemoteGraphQLDataSource({
-      url,
-      willSendRequest({ request, context }) {
-        // Only add the token if a token exists
-        // console.log("gateway", Object.keys(context));
-        context.token
-          ? // Split header string by space and pick token
-            request.http.headers.set("jwt", context.token.split(" ")[1])
-          : null;
-      },
-    });
+    return new AuthenticatedDataSource({ url });
   },
 });
 
 const start = async () => {
   if (!process.env.AUTH_URL) {
-    throw new Error("AUTH_URL needs to be defined");
+    throw new Error('AUTH_URL needs to be defined');
   }
   const { schema, executor } = await gateway.load();
 
@@ -28,12 +38,7 @@ const start = async () => {
     schema,
     executor,
     context: ({ req, res }) => {
-      // console.log(req.session);
-      // console.log(req.session._ctx.headers.cookie);
-      // console.log(Object.keys(req));
-      console.log(req.headers.authorization);
-      const token = req.headers.authorization || null;
-      return { token: token };
+      return { req, res };
     },
     subscriptions: false,
   });

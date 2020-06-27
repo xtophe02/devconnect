@@ -1,9 +1,9 @@
-import { Container, Typography } from "@material-ui/core";
-import gql from "graphql-tag";
-import { useQuery } from "@apollo/react-hooks";
+import { Container, Typography } from '@material-ui/core';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
 
-import Link from "../src/Link";
-import { initializeApollo } from "../apollo/client";
+import Link from '../src/Link';
+import { initializeApollo } from '../apollo/client';
 
 const HELLO = gql`
   query Hello {
@@ -26,21 +26,21 @@ const IndexPage = () => {
   // console.log(data);
   //to change by a Loading component
   if (loading) {
-    return "loading";
+    return 'loading';
   }
 
   return (
     <Container>
-      <Typography variant="h3" color="primary">
-        {data && data.hello ? data.hello : "nok"}
+      <Typography variant='h3' color='primary'>
+        {data.hello ? data.hello : 'nok'}
         {/* {data && data.currentUser?.email
           ? data.currentUser?.email
           : 'please to sign'} */}
       </Typography>
-      <Link href="/signup" color="secondary">
+      <Link href='/signup' color='secondary'>
         Go to the sing up page
       </Link>
-      <Link href="/signin" color="secondary">
+      <Link href='/signin' color='secondary'>
         Go to the sing in page
       </Link>
       {JSON.stringify(error)}
