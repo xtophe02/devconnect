@@ -12,6 +12,10 @@ spec:
       labels:
         app: auth-mongo
     spec:
+      # volumes:
+      #   - name: auth-mongo-storage
+      #     persistentVolumeClaim:
+      #       claimName: db-auth-pvc
       containers:
         - name: auth-mongo
           # imagePullPolicy: Never
@@ -19,6 +23,9 @@ spec:
           image: mongo
           # ports:
           #   - containerPort: 4005
+          # volumeMounts:
+          #   - name: auth-mongo-storage
+          #     mountPath: '/etc/mongo'
 ---
 apiVersion: v1
 kind: Service

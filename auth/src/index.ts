@@ -24,17 +24,17 @@ const start = async () => {
   }
   try {
     //CONNECT TO NATS FOR PUBLISH OR LISTEN EVENTS
-    await natsWrapper.connect(
-      process.env.NATS_CLUSTER_ID,
-      process.env.NATS_CLIENT_ID,
-      process.env.NATS_URL
-    );
-    natsWrapper.client.on('close', () => {
-      console.log('NATS connection closed');
-      process.exit();
-    });
-    process.on('SIGINT', () => natsWrapper.client.close());
-    process.on('SIGTERM', () => natsWrapper.client.close());
+    // await natsWrapper.connect(
+    //   process.env.NATS_CLUSTER_ID,
+    //   process.env.NATS_CLIENT_ID,
+    //   process.env.NATS_URL
+    // );
+    // natsWrapper.client.on('close', () => {
+    //   console.log('NATS connection closed');
+    //   process.exit();
+    // });
+    // process.on('SIGINT', () => natsWrapper.client.close());
+    // process.on('SIGTERM', () => natsWrapper.client.close());
 
     //CONNECT TO MONGODB
     await mongoose.connect(process.env.MONGO_URI!, {

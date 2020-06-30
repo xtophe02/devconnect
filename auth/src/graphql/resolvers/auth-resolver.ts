@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { UserCreatedPublisher } from '../../events/user-created-publisher';
+import yup from 'yup';
 
 import { User } from '../../models/user';
 import { Password } from '../../utils/password';
@@ -10,11 +11,16 @@ interface UserPayload {
   id: string;
   email: string;
 }
-
+// const teste = async (root: any, args: any, ctx: any) => {
+//   return { id: 's', email: 'teste' };
+// };
 const resolvers = {
   Query: {
     hello: (root: any, args: any, ctx: any) => {
       return 'Hello World';
+    },
+    hello2: (root: any, args: any, ctx: any) => {
+      return 'Hello World2';
     },
     currentUser: async (root: any, { data }: any, ctx: any) => {
       // if (!req.session?.jwt) {
@@ -33,14 +39,15 @@ const resolvers = {
   },
   Mutation: {
     signUp: async (root: any, { data }: any, ctx: any) => {
-      //TODO inputs validation
-      const { email, password, name, username } = data;
+      console.log(data);
+      const { email, password, name, username, avatar } = data;
       const hashedPassword = await Password.toHash(password);
       const user = User.build({
         email,
         password: hashedPassword,
         name,
         username,
+        avatar,
       });
       //THE SAVE AND PUBLIHSHER SHOULD BE DONE IN MONGODB TRANSACTION
       await user.save();
@@ -62,7 +69,7 @@ const resolvers = {
       //@ts-ignore
       console.log('user:', { ...user._doc });
       //@ts-ignore
-      return { ...user._doc };
+      return { ...user._doc, id: user._id };
     },
     signIn: async (root: any, { data }: any, ctx: any) => {
       //TODO inputs validation
@@ -84,7 +91,7 @@ const resolvers = {
       //@ts-ignore
       console.log('user:', { ...user._doc });
       //@ts-ignore
-      return { ...user._doc };
+      return { ...user._doc, id: user._id };
     },
   },
 };

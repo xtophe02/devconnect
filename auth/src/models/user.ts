@@ -1,12 +1,13 @@
 import mongoose from 'mongoose';
 import { Password } from '../utils/password';
-import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
+// import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 export interface UserAttrs {
   name: string;
   username: string;
   email: string;
   password: string;
+  avatar: string;
 }
 //methods user model has
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -20,6 +21,7 @@ interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
   createdAt: Date;
+  avatar: string;
 }
 const userSchema = new mongoose.Schema(
   {
@@ -31,6 +33,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    avatar: {
+      type: String,
+    },
     email: {
       type: String,
       required: true,
@@ -41,23 +46,23 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     createdAt: {
-      type: mongoose.Schema.Types.Date,
+      type: Date,
       default: Date.now,
     },
-  },
-  {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.password;
-        delete ret.__v;
-      },
-    },
   }
+  // {
+  //   toJSON: {
+  //     transform(doc, ret) {
+  //       ret.id = ret._id;
+  //       delete ret._id;
+  //       delete ret.password;
+  //       delete ret.__v;
+  //     },
+  //   },
+  // }
 );
-userSchema.set('versionKey', 'version');
-userSchema.plugin(updateIfCurrentPlugin);
+// userSchema.set('versionKey', 'version');
+// userSchema.plugin(updateIfCurrentPlugin);
 
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {

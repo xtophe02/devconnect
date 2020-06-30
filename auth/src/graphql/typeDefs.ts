@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 const typeDefs = gql`
   extend type Query {
     hello: String
+    hello2: String
     currentUser: User
   }
   extend type Mutation {
@@ -15,18 +16,19 @@ const typeDefs = gql`
     username: String!
     email: String!
     # password: String!
-    # photo: String
+    avatar: String
     # posts: [Post!]!
     # comments: [Comment!]!
     # updatedAt: String!
-    # createdAt: String!
+    createdAt: Date
   }
   input SignUpInput {
     name: String!
     username: String!
     email: String!
     password: String!
-    createAt: Date
+    avatar: String
+    # createAt: Date
   }
   input SignInInput {
     email: String!

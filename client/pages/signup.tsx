@@ -23,7 +23,7 @@ const SignUp = () => {
     signUp({
       variables: {
         data: {
-          email: 'christophe.moreira@outlook.com12',
+          email: 'christophe.moreira@outlook.com',
           password: 'password',
           name: 'Christophe Moreira',
           username: 'chrismo',
