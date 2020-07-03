@@ -1,12 +1,12 @@
-import { useMemo } from 'react';
-import { ApolloClient } from 'apollo-client';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HttpLink } from 'apollo-link-http';
-
-import { persistCache } from 'apollo-cache-persist';
+import { useMemo } from "react";
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { HttpLink } from "apollo-link-http";
+import { createUploadLink } from "apollo-upload-client";
+import { persistCache } from "apollo-cache-persist";
 
 let apolloClient;
-const ssrMode = () => typeof window === 'undefined';
+const ssrMode = () => typeof window === "undefined";
 function createApolloClient() {
   const cache = new InMemoryCache();
 
@@ -19,9 +19,9 @@ function createApolloClient() {
 
   return new ApolloClient({
     ssrMode: ssrMode(),
-    link: new HttpLink({
-      uri: ssrMode() ? 'http://api-gateway-srv:4000/graphql' : '/graphql',
-      credentials: 'include',
+    link: createUploadLink({
+      uri: ssrMode() ? "http://api-gateway-srv:4000/graphql" : "/graphql",
+      credentials: "include",
     }),
 
     cache,

@@ -7,50 +7,27 @@ import { Cookies } from "../../utils/cookies";
 import { natsWrapper } from "../../nats-wrapper";
 import { GraphQLUpload } from "apollo-server-express";
 
-interface UserJwtPayload {
-  id: string;
-  email: string;
-}
-
-// interface UserData extends UserAttrs {
-//   data: UserAttrs;
-// }
-export interface Upload {
-  stream: Readable;
-  filename: string;
-  mimetype: string;
-  encoding: string;
-}
-interface teste {
-  data: {
-    email: string;
-    name: string;
-    username: string;
-    password: string;
-    avatar: Upload;
-  };
-}
 const resolvers = {
   Query: {
-    hello: (root: any, args: any, ctx: any) => {
+    hello: (root, args, ctx) => {
       return "Hello World";
     },
-    currentUser: async (root: any, args: any, ctx: any) => {
+    currentUser: async (root, args, ctx) => {
       try {
         const payload = jwt.verify(
           ctx.req.headers.token.split("=")[1],
-          process.env.JWT_KEY!
-        ) as UserJwtPayload;
+          process.env.JWT_KEY
+        );
         return { ...payload };
       } catch (error) {}
       return { email: "teste" };
     },
   },
   Mutation: {
-    signUp: async (root: any, { data }: any, ctx: any) => {
+    signUp: async (root, { data }, ctx) => {
       const { email, password, name, username, avatar } = data;
       console.log(avatar);
-
+      return { email: "test@test.com", id: "1" };
       try {
         const user = await User.findOne({ email });
         if (user) {
@@ -70,7 +47,7 @@ const resolvers = {
 
         const userJwt = jwt.sign(
           { id: newUser.id, email: newUser.email },
-          process.env.JWT_KEY!
+          process.env.JWT_KEY
         );
 
         Cookies.setCookie(userJwt, ctx.res);
@@ -90,7 +67,7 @@ const resolvers = {
       //   createdAt: user.createdAt.toISOString(),
       // });
     },
-    signIn: async (root: any, { data }: any, ctx: any) => {
+    signIn: async (root, { data }, ctx) => {
       //TODO inputs validation
       const { email, password } = data;
       const user = await User.findOne({ email });
@@ -103,23 +80,21 @@ const resolvers = {
       }
       const userJwt = jwt.sign(
         { id: user.id, email: user.email },
-        process.env.JWT_KEY!
+        process.env.JWT_KEY
       );
 
       Cookies.setCookie(userJwt, ctx.res);
-      //@ts-ignore
+
       console.log("user:", { ...user._doc });
-      //@ts-ignore
+
       return { ...user._doc, id: user._id };
     },
-    singleUpload: async (root: any, { file }: any, ctx: any, info: any) => {
-      console.log(ctx.req.body.variables);
-      // const test = await ctx.req.body.variables;
-
-      // console.log(Object.keys(ctx.req.headers));
-      return ctx.req.body.variables.file;
-    },
+  },
+  singleUpload: async (root, { file }, ctx, info) => {
+    console.log("aki");
+    console.log(file);
+    return { filename: "teste", mimetype: "teste", encoding: "teste" };
   },
 };
 
-export { resolvers };
+exports.resolvers = resolvers;

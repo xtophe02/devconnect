@@ -1,0 +1,23 @@
+const { ApolloServer } = require("apollo-server");
+const { ApolloGateway } = require("@apollo/gateway");
+const FileUploadDataSource = require("@profusion/apollo-federation-upload");
+
+const runServer = async () => {
+  const server = new ApolloServer({
+    gateway: new ApolloGateway({
+      // Add this line in order to support file uploads.
+      buildService: ({ url }) => new FileUploadDataSource({ url }),
+      serviceList: [{ name: "auth", url: process.env.AUTH_URL }],
+    }),
+    subscriptions: false,
+  });
+
+  const { url } = await server.listen();
+
+  console.log(`🚀  Server ready at ${url}`);
+};
+
+runServer().catch((error) => {
+  console.error("💥  Failed to start server:", error);
+  process.exit(1);
+});
