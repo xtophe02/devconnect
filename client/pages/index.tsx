@@ -40,12 +40,18 @@ const IndexPage = () => {
           ? data.currentUser?.email
           : 'please to sign'}
       </Typography>
-      <Link href='/signup' color='secondary'>
-        Go to the sing up page
-      </Link>
-      <Link href='/signin' color='secondary'>
-        Go to the sing in page
-      </Link>
+      <ul>
+        <Link href='/signup' color='secondary'>
+          <li>Sing Up</li>
+        </Link>
+        <Link href='/signin' color='secondary'>
+          <li>Sign In</li>
+        </Link>
+        <Link href='/upload' color='secondary'>
+          <li>Upload</li>
+        </Link>
+      </ul>
+
       {JSON.stringify(error)}
     </Container>
   );

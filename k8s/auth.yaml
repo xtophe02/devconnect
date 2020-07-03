@@ -18,6 +18,15 @@ spec:
           # image: us.gcr.io/ticketing-dev/auth
           image: xtophe02/devconnector-auth
           env:
+            - name: CLOUD_NAME
+              value: chrismo
+            - name: CLOUD_API_KEY
+              value: '891396345568939'
+            - name: CLOUD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-secret
+                  key: CLOUD_SECRET
             - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:

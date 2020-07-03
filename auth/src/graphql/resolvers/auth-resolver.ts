@@ -1,11 +1,11 @@
-import jwt from "jsonwebtoken";
-import { UserCreatedPublisher } from "../../events/user-created-publisher";
-import { Readable } from "stream";
-import { User, UserAttrs } from "../../models/user";
-import { Password } from "../../utils/password";
-import { Cookies } from "../../utils/cookies";
-import { natsWrapper } from "../../nats-wrapper";
-import { GraphQLUpload } from "apollo-server-express";
+import jwt from 'jsonwebtoken';
+import { UserCreatedPublisher } from '../../events/user-created-publisher';
+import { Readable } from 'stream';
+import { User, UserAttrs } from '../../models/user';
+import { Password } from '../../utils/password';
+import { Cookies } from '../../utils/cookies';
+import { natsWrapper } from '../../nats-wrapper';
+import { storeUpload } from '../../utils/store-files';
 
 interface UserJwtPayload {
   id: string;
@@ -33,37 +33,38 @@ interface teste {
 const resolvers = {
   Query: {
     hello: (root: any, args: any, ctx: any) => {
-      return "Hello World";
+      return 'Hello World';
     },
     currentUser: async (root: any, args: any, ctx: any) => {
       try {
         const payload = jwt.verify(
-          ctx.req.headers.token.split("=")[1],
+          ctx.req.headers.token.split('=')[1],
           process.env.JWT_KEY!
         ) as UserJwtPayload;
         return { ...payload };
-      } catch (error) {}
-      return { email: "teste" };
+      } catch (error) {
+        console.log(error);
+      }
+      return;
     },
   },
   Mutation: {
     signUp: async (root: any, { data }: any, ctx: any) => {
       const { email, password, name, username, avatar } = data;
-      console.log(avatar);
-
+      const user = await User.findOne({ email });
+      if (user) {
+        //CREATE BAD REQUEST
+        throw new Error('Email already in use');
+      }
       try {
-        const user = await User.findOne({ email });
-        if (user) {
-          //CREATE BAD REQUEST
-          throw new Error("Email already in use");
-        }
         const hashedPassword = await Password.toHash(password);
+        const file = await storeUpload(avatar);
         const newUser = User.build({
           email,
           password: hashedPassword,
           name,
           username,
-          avatar,
+          avatar: file.cloudPath,
         });
         //THE SAVE AND PUBLIHSHER SHOULD BE DONE IN MONGODB TRANSACTION
         await newUser.save();
@@ -78,7 +79,7 @@ const resolvers = {
         return { ...newUser._doc, id: newUser._id };
       } catch (error) {
         console.error(error);
-        throw new Error("something went wrong");
+        throw new Error('something went wrong');
       }
 
       //NO NEED TO PUBLISH A NEW USER
@@ -95,11 +96,11 @@ const resolvers = {
       const { email, password } = data;
       const user = await User.findOne({ email });
       if (!user) {
-        throw new Error("Email not correct");
+        throw new Error('Email not correct');
       }
       const comparePassword = await Password.compare(user.password, password);
       if (!comparePassword) {
-        throw new Error("Password not correct");
+        throw new Error('Password not correct');
       }
       const userJwt = jwt.sign(
         { id: user.id, email: user.email },
@@ -108,7 +109,7 @@ const resolvers = {
 
       Cookies.setCookie(userJwt, ctx.res);
       //@ts-ignore
-      console.log("user:", { ...user._doc });
+      console.log('user:', { ...user._doc });
       //@ts-ignore
       return { ...user._doc, id: user._id };
     },

@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 const typeDefs = gql`
   extend type Query {
@@ -16,7 +16,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     # password: String!
-    # avatar: String
+    avatar: String
     # posts: [Post!]!
     # comments: [Comment!]!
     # updatedAt: String!

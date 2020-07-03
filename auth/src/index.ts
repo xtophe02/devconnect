@@ -22,6 +22,9 @@ const start = async () => {
   if (!process.env.NATS_URL) {
     throw new Error('NATS_URL must be defined');
   }
+  if (!process.env.CLOUD_SECRET) {
+    throw new Error('CLOUD_SECRET must be defined');
+  }
   try {
     //CONNECT TO NATS FOR PUBLISH OR LISTEN EVENTS
     // await natsWrapper.connect(
