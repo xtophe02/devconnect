@@ -15,12 +15,18 @@ const typeDefs = gql`
     name: String!
     username: String!
     email: String!
+    role: [Role]
     # password: String!
     avatar: String
     # posts: [Post!]!
     # comments: [Comment!]!
     # updatedAt: String!
     createdAt: Date
+  }
+  enum Role {
+    ADMIN
+    MANAGER
+    USER
   }
   type File {
     filename: String!
@@ -34,6 +40,7 @@ const typeDefs = gql`
     password: String!
     avatar: Upload
     # createAt: Date
+    role: [Role]
   }
   input SignInInput {
     email: String!

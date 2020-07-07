@@ -5,11 +5,6 @@ import { useQuery, useLazyQuery } from '@apollo/react-hooks';
 import Link from '../src/Link';
 import { initializeApollo } from '../apollo/client';
 
-// const HELLO = gql`
-//   query Hello {
-//     hello
-//   }
-// `;
 const CURRENTUSER = gql`
   query {
     currentUser {
@@ -23,9 +18,6 @@ const IndexPage = () => {
     fetchPolicy: 'network-only',
   });
 
-  // const { loading, error, data } = useQuery(CURRENTUSER, {
-  //   fetchPolicy: 'network-only',
-  // });
   // console.log(data);
   //to change by a Loading component
   if (loading) {
@@ -49,6 +41,9 @@ const IndexPage = () => {
         </Link>
         <Link href='/upload' color='secondary'>
           <li>Upload</li>
+        </Link>
+        <Link href='/hello' color='secondary'>
+          <li>Hello</li>
         </Link>
       </ul>
 

@@ -16,7 +16,7 @@ const SIGNUP = gql`
 
 const SignUp = () => {
   const router = useRouter();
-  const [avatar, setAvatar] = React.useState();
+  const [avatar, setAvatar] = React.useState('');
   const [signUp, { data, error }] = useMutation(SIGNUP, {
     onCompleted: () => router.push('/'),
   });

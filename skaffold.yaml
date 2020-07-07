@@ -17,19 +17,19 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "**/*.tsx"
+          - src: '**/*.tsx'
             dest: .
-          - src: "**/*.ts"
+          - src: '**/*.ts'
             dest: .
-          - src: "**/*.js"
-            dest: .
+          # - src: "**/*.js"
+          #   dest: .
     - image: xtophe02/devconnector-api-gateway
       context: api-gateway
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.js"
+          - src: 'src/**/*.js'
             dest: .
     - image: xtophe02/devconnector-auth
       context: auth
@@ -37,15 +37,5 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.ts"
+          - src: 'src/**/*.ts'
             dest: .
-          - src: "src/**/*.js"
-            dest: .
-    # - image: xtophe02/devconnector-users
-    #   context: users
-    #   docker:
-    #     dockerfile: Dockerfile
-    #   sync:
-    #     manual:
-    #       - src: 'src/**/*.ts'
-    #         dest: .

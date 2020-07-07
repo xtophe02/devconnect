@@ -1,7 +1,7 @@
 import { serialize, parse } from 'cookie';
 
 const TOKEN_NAME = 'token';
-const MAX_AGE = 60 * 60 * 8; // 8 hours
+const MAX_AGE = 60 * 60 * 3; // 3 hours
 
 export class Cookies {
   static async setCookie(userJwt: any, res: any) {

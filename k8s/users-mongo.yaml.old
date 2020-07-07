@@ -12,6 +12,10 @@ spec:
       labels:
         app: users-mongo
     spec:
+      volumes:
+        - name: users-mongo-storage
+          persistentVolumeClaim:
+            claimName: db-users-pvc
       containers:
         - name: users-mongo
           # imagePullPolicy: Never
@@ -19,6 +23,9 @@ spec:
           image: mongo
           # ports:
           #   - containerPort: 4005
+          volumeMounts:
+            - name: users-mongo-storage
+              mountPath: /data/db
 ---
 apiVersion: v1
 kind: Service

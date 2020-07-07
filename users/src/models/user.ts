@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
 export interface UserAttrs {
+  id: string;
   name: string;
   username: string;
   email: string;
+  createdAt: string;
 }
 //methods user model has
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -33,19 +35,19 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
-        delete ret._id;
-        delete ret.__v;
-      },
+      type: String,
+      required: true,
     },
   }
+  // {
+  //   toJSON: {
+  //     transform(doc, ret) {
+  //       ret.id = ret._id;
+  //       delete ret._id;
+  //       delete ret.__v;
+  //     },
+  //   },
+  // }
 );
 
 userSchema.statics.build = (attrs: UserAttrs) => {

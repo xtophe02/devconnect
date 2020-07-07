@@ -25,7 +25,7 @@ spec:
           #   - containerPort: 4005
           volumeMounts:
             - name: auth-mongo-storage
-              mountPath: '/data/db'
+              mountPath: /data/db
 ---
 apiVersion: v1
 kind: Service
