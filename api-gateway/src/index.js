@@ -23,11 +23,17 @@ class AuthenticatedDataSource extends FileUploadDataSource {
 }
 
 const runServer = async () => {
+  if (!process.env.USERS_URL && !process.env.USERS_URL) {
+    throw new Error('USERS_URL&&POSTS_URL needs to be defined');
+  }
   const server = new ApolloServer({
     gateway: new ApolloGateway({
       // Add this line in order to support file uploads.
       buildService: ({ url }) => new AuthenticatedDataSource({ url }),
-      serviceList: [{ name: 'auth', url: process.env.AUTH_URL }],
+      serviceList: [
+        { name: 'users', url: process.env.USERS_URL },
+        { name: 'pots', url: process.env.POSTS_URL },
+      ],
     }),
     context: ({ req, res }) => {
       return { req, res };

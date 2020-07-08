@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Typography } from '@material-ui/core';
+
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
@@ -30,14 +30,12 @@ const SignIn = () => {
   };
   console.log('useMutation', data);
   return (
-    <Container>
-      <Typography variant='h3' color='primary'>
-        Sign In {data && data.signIn.email}
-      </Typography>
+    <>
+      Sign In {data && data.signIn.email}
       <form onSubmit={handleSubmit}>
         <button type='submit'>Sign In</button>
       </form>
-    </Container>
+    </>
   );
 };
 

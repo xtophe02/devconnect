@@ -9,7 +9,7 @@ const start = async () => {
   if (!process.env.PORT) {
     throw new Error('PORT must be defined');
   }
-  if (!process.env.USERS_MONGO_URI) {
+  if (!process.env.POSTS_MONGO_URI) {
     throw new Error('MONGO URI must be defined');
   }
   if (!process.env.CLOUD_SECRET) {
@@ -17,7 +17,7 @@ const start = async () => {
   }
   try {
     //CONNECT TO MONGODB
-    await mongoose.connect(process.env.USERS_MONGO_URI!, {
+    await mongoose.connect(process.env.POSTS_MONGO_URI!, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

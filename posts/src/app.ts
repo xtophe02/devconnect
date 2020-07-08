@@ -5,10 +5,7 @@ import { applyMiddleware } from 'graphql-middleware';
 
 import { typeDefs } from './graphql/typeDefs';
 import { resolvers } from './graphql/resolvers';
-import {
-  signUpValidation,
-  signInValidation,
-} from './graphql/middlewares/user-validation';
+
 import { getUserId } from '@cmdevconnect/common';
 
 const app = express();
@@ -21,11 +18,7 @@ const schema = buildFederatedSchema([
     resolvers,
   },
 ]);
-const schemaWithMiddleware = applyMiddleware(
-  schema,
-  signUpValidation,
-  signInValidation
-);
+const schemaWithMiddleware = applyMiddleware(schema);
 
 const server = new ApolloServer({
   uploads: {

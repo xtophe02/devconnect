@@ -1,8 +1,9 @@
 import React from 'react';
-import { Container, Typography, Button } from '@material-ui/core';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
+import { Roles } from '@cmdevconnect/common';
+import { Layout, Form } from '../components';
 
 const SIGNUP = gql`
   mutation SIGNUP($data: SignUpInput!) {
@@ -13,48 +14,57 @@ const SIGNUP = gql`
     }
   }
 `;
-
+interface Values {
+  email: string;
+  password: string;
+  name: string;
+  username: string;
+  role: Roles.Admin;
+}
 const SignUp = () => {
   const router = useRouter();
-  const [avatar, setAvatar] = React.useState('');
+  const [state, setState] = React.useState({
+    email: 'christophe.moreira@outlook.com',
+    password: 'password',
+    name: 'Christophe Moreira',
+    username: 'chrismo',
+    role: Roles.Admin,
+  });
   const [signUp, { data, error }] = useMutation(SIGNUP, {
     onCompleted: () => router.push('/'),
   });
-  const handleChange = ({
-    target: {
-      files: [file],
-    },
-  }) => {
-    setAvatar(file);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setState((prevState) => {
+      return { ...prevState, [name]: value };
+    });
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+
     signUp({
       variables: {
         data: {
-          email: 'christophe.moreira@outlook.com',
-          password: 'password',
-          name: 'Christophe Moreira',
-          username: 'chrismo',
-          avatar,
+          ...state,
         },
       },
     }).catch((err) => console.log(err));
   };
 
   return (
-    <Container>
-      <Typography variant='h3' color='primary'>
-        Sign up
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <input type='file' onChange={handleChange} />
-        <button type='submit'>Sign Up</button>
-      </form>
-      {error && JSON.stringify(error)}
-      {/* {data ? <img src={data.signUp.avatar} alt='' /> : 'no pic'}
-      {data && console.log(data.signUp.avatar)} */}
-    </Container>
+    <Layout title='Sign Up'>
+      <div className='columns'>
+        <div className='column'></div>
+        <div className='column is-three-quarters'>
+          <form onSubmit={handleSubmit}>
+            <Form values={state} handleChange={handleChange} />
+          </form>
+          {error && JSON.stringify(error)}
+        </div>
+
+        <div className='column'></div>
+      </div>
+    </Layout>
   );
 };
 

@@ -1,9 +1,9 @@
-import { Container, Typography } from '@material-ui/core';
 import gql from 'graphql-tag';
 import { useQuery, useLazyQuery } from '@apollo/react-hooks';
+import Link from 'next/link';
 
-import Link from '../src/Link';
 import { initializeApollo } from '../apollo/client';
+import { Layout } from '../components';
 
 const CURRENTUSER = gql`
   query {
@@ -23,32 +23,32 @@ const IndexPage = () => {
   if (loading) {
     return 'loading';
   }
-
+  const setSubtitle = () => {
+    if (data && data.currentUser?.email) return data.currentUser?.email;
+    return 'please to sign';
+  };
   return (
-    <Container>
-      <Typography variant='h3' color='primary'>
-        {/* {data && data.hello ? data.hello : 'nok'} */}
-        {data && data.currentUser?.email
-          ? data.currentUser?.email
-          : 'please to sign'}
-      </Typography>
+    <Layout title='Home' subtitle={setSubtitle()}>
       <ul>
-        <Link href='/signup' color='secondary'>
-          <li>Sing Up</li>
+        <li>
+          <Link href='/signup'>
+            <a>Sing Up</a>
+          </Link>
+        </li>
+
+        <Link href='/signin'>
+          <a>Sign In</a>
         </Link>
-        <Link href='/signin' color='secondary'>
-          <li>Sign In</li>
+        <Link href='/upload'>
+          <a>Upload</a>
         </Link>
-        <Link href='/upload' color='secondary'>
-          <li>Upload</li>
-        </Link>
-        <Link href='/hello' color='secondary'>
-          <li>Hello</li>
+        <Link href='/hello'>
+          <a>Hello</a>
         </Link>
       </ul>
 
       {JSON.stringify(error)}
-    </Container>
+    </Layout>
   );
 };
 // export async function getStaticProps() {

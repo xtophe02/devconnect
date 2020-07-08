@@ -31,11 +31,27 @@ build:
         manual:
           - src: 'src/**/*.js'
             dest: .
-    - image: xtophe02/devconnector-auth
-      context: auth
+    - image: xtophe02/devconnector-users
+      context: users
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: xtophe02/devconnector-posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    # - image: xtophe02/flyimg
+    #   context: flyimg
+    #   docker:
+    #     dockerfile: Dockerfile
+    #   sync:
+    #     manual:
+    #       - src: '**/*.php'
+    #         dest: .

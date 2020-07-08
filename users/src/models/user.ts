@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
 
+import { Password } from '../utils/password';
+
 export interface UserAttrs {
-  id: string;
   name: string;
   username: string;
   email: string;
-  createdAt: string;
+  password: string;
 }
 //methods user model has
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -17,6 +18,7 @@ interface UserDoc extends mongoose.Document {
   name: string;
   username: string;
   email: string;
+  password: string;
   createdAt: Date;
 }
 const userSchema = new mongoose.Schema(
@@ -28,15 +30,20 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
     },
-    createdAt: {
+    password: {
       type: String,
       required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
     },
   }
   // {
@@ -44,11 +51,19 @@ const userSchema = new mongoose.Schema(
   //     transform(doc, ret) {
   //       ret.id = ret._id;
   //       delete ret._id;
-  //       delete ret.__v;
+  //       delete ret.password;
   //     },
   //   },
   // }
 );
+
+userSchema.pre('save', async function (done) {
+  if (this.isModified('password')) {
+    const hashed = await Password.toHash(this.get('password'));
+    this.set('password', hashed);
+  }
+  done();
+});
 
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);

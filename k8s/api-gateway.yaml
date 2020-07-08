@@ -18,8 +18,10 @@ spec:
           # image: us.gcr.io/ticketing-dev/auth
           image: xtophe02/devconnector-api-gateway
           env:
-            - name: AUTH_URL
-              value: 'http://auth-srv:4000/graphql'
+            - name: USERS_URL
+              value: 'http://users-srv:4000/graphql'
+            - name: POSTS_URL
+              value: 'http://posts-srv:4000/graphql'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
