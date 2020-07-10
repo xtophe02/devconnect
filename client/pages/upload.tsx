@@ -1,6 +1,7 @@
-import React from "react";
-import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { Layout } from '../components';
 
 const SINGLEUPLOAD = gql`
   mutation SINGLEUPLOAD($file: Upload) {
@@ -31,9 +32,9 @@ const upload = () => {
     }
   };
   return (
-    <div>
-      <input type="file" onChange={handleUpload} />
-    </div>
+    <Layout>
+      <input type='file' onChange={handleUpload} />
+    </Layout>
   );
 };
 
