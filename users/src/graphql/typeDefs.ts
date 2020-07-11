@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 const typeDefs = gql`
   extend type Query {
@@ -8,7 +8,7 @@ const typeDefs = gql`
   extend type Mutation {
     signUp(data: SignUpInput!): User!
     signIn(data: SignInInput!): User!
-    singleUpload(file: Upload): File
+    singleUpload(file: Upload): UploadedFileResponse
   }
   type User @key(fields: "id") {
     id: ID!
@@ -20,10 +20,11 @@ const typeDefs = gql`
     createdAt: Date
   }
 
-  type File {
+  type UploadedFileResponse {
     filename: String!
     mimetype: String!
     encoding: String!
+    url: String!
   }
   input SignUpInput {
     name: String!

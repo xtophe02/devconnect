@@ -19,6 +19,7 @@
     "@types/mkdirp": "^1.0.1",
     "@types/mongoose": "^5.7.27",
     "apollo-server-express": "^2.15.0",
+    "aws-sdk": "^2.713.0",
     "cloudinary": "^1.22.0",
     "cookie": "^0.4.1",
     "cookie-session": "^1.4.0",
@@ -35,6 +36,7 @@
     "yup": "^0.29.1"
   },
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "@types/yup": "^0.29.3"
   }
 }

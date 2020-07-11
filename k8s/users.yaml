@@ -21,14 +21,25 @@ spec:
             - name: CLOUD_NAME
               value: chrismo
             - name: CLOUD_API_KEY
-              value: '891396345568939'
+              value: "891396345568939"
             - name: CLOUD_SECRET
               valueFrom:
                 secretKeyRef:
                   name: cloud-secret
                   key: CLOUD_SECRET
+            - name: AWS_S3_REGION
+              value: "eu-west-3"
+            - name: AWS_S3_BUCKET
+              value: "cmo-aws"
+            - name: AWS_ACCESS_KEY_ID
+              value: "AKIAIGD7HEBT7MVQBEKA"
+            - name: AWS_ACCESS_KEY_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret
+                  key: AWS_SECRET
             - name: PORT
-              value: '4000'
+              value: "4000"
             - name: USERS_MONGO_URI
               valueFrom:
                 secretKeyRef:

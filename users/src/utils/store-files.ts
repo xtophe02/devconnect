@@ -1,15 +1,15 @@
 //rm and use flyimg when online
 
-const cloudinary = require('cloudinary');
+const cloudinary = require("cloudinary");
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.CLOUD_API_KEY,
   api_secret: process.env.CLOUD_SECRET,
 });
-const { createWriteStream, unlink } = require('fs');
-const mkdirp = require('mkdirp');
+const { createWriteStream, unlink } = require("fs");
+const mkdirp = require("mkdirp");
 
-const UPLOAD_DIR = './src/uploads';
+const UPLOAD_DIR = "./src/uploads";
 // Ensure upload directory exists.
 mkdirp.sync(UPLOAD_DIR);
 
@@ -25,13 +25,17 @@ export const storeUpload = async (upload: any) => {
   await new Promise((resolve, reject) => {
     // Create a stream to which the upload will be written.
     const writeStream = createWriteStream(path);
-
+    console.log(path);
     // When the upload is fully written, resolve the promise.
-    writeStream.on('finish', resolve);
+    writeStream.on("finish", resolve);
+    // writeStream.on("finish", (result: any) => {
+    //   unlink(path, () => {
+    //     resolve(result);
+    //   });
 
     // If there's an error writing the file, remove the partially written file
     // and reject the promise.
-    writeStream.on('error', (error: any) => {
+    writeStream.on("error", (error: any) => {
       unlink(path, () => {
         reject(error);
       });
@@ -40,30 +44,30 @@ export const storeUpload = async (upload: any) => {
     // In node <= 13, errors are not automatically propagated between piped
     // streams. If there is an error receiving the upload, destroy the write
     // stream with the corresponding error.
-    stream.on('error', (error: any) => writeStream.destroy(error));
+    stream.on("error", (error: any) => writeStream.destroy(error));
 
     // Pipe the upload into the write stream.
     stream.pipe(writeStream);
   });
-  let cloudPath;
-  try {
-    const photo = await cloudinary.v2.uploader.upload(
-      path,
-      {
-        use_filename: true,
-        unique: false,
-      },
-      (error: any, result: any) => {
-        if (error) console.log(error);
+  // let cloudPath;
+  // try {
+  //   const photo = await cloudinary.v2.uploader.upload(
+  //     path,
+  //     {
+  //       use_filename: true,
+  //       unique: false,
+  //     },
+  //     (error: any, result: any) => {
+  //       if (error) console.log(error);
 
-        // console.log('result', result);
-      }
-    );
-    cloudPath = photo.secure_url;
-    // couldPath = `${photo.public_id}.${photo.format}`;
-  } catch (error) {
-    throw new Error(error);
-  }
-
-  return { file, cloudPath };
+  //       // console.log('result', result);
+  //     }
+  //   );
+  //   cloudPath = photo.secure_url;
+  //   // couldPath = `${photo.public_id}.${photo.format}`;
+  // } catch (error) {
+  //   throw new Error(error);
+  // }
+  console.log(file);
+  return { file };
 };
