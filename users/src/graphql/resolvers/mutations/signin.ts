@@ -20,7 +20,7 @@ export const signIn = async (root: any, { data }: any, ctx: any) => {
     process.env.JWT_KEY!
   );
   Cookies.setCookie(userJwt, ctx.res);
-
+  console.log(user);
   //@ts-ignore
   return { ...user._doc, id: user._id };
 };

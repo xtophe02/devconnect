@@ -1,14 +1,17 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 const typeDefs = gql`
   extend type Query {
     hello: String
+    me: User
     currentUser: User
   }
   extend type Mutation {
     signUp(data: SignUpInput!): User!
     signIn(data: SignInInput!): User!
+    signOut: Boolean
     singleUpload(file: Upload): UploadedFileResponse
+    multipleUpload(files: [Upload]): UploadedFileResponse
   }
   type User @key(fields: "id") {
     id: ID!
@@ -16,10 +19,13 @@ const typeDefs = gql`
     username: String!
     email: String!
     role: String
-    avatar: String
+    avatar(options: CloudinaryOptions): String
     createdAt: Date
   }
-
+  type UserJWT {
+    id: String
+    email: String
+  }
   type UploadedFileResponse {
     filename: String!
     mimetype: String!
@@ -31,7 +37,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     password: String!
-    # avatar: Upload
+    avatar: Upload
     role: String!
   }
   input SignInInput {
@@ -40,6 +46,7 @@ const typeDefs = gql`
   }
   scalar Date
   scalar Upload
+  scalar CloudinaryOptions
 `;
 
 export { typeDefs };

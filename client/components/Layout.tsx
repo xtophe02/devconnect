@@ -1,12 +1,31 @@
 import React from 'react';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/react-hooks';
+
+import NavBar from './NavBar';
+
+const CURRENTUSER = gql`
+  query {
+    currentUser {
+      email
+    }
+  }
+`;
 
 export const Layout = ({
   children,
   title = 'to define',
   subtitle = 'to define',
 }) => {
+  const { loading, error, data } = useQuery(CURRENTUSER, {
+    fetchPolicy: 'network-only',
+  });
+
+  const teste = data && data.currentUser ? data.currentUser.email : null;
+
   return (
     <>
+      <NavBar loading={loading} email={teste} />
       <section className='hero'>
         <div className='hero-body'>
           <div className='container'>

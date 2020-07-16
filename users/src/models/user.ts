@@ -7,6 +7,8 @@ export interface UserAttrs {
   username: string;
   email: string;
   password: string;
+  avatar: string;
+  photoId: string;
 }
 //methods user model has
 interface UserModel extends mongoose.Model<UserDoc> {
@@ -20,10 +22,20 @@ interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
   createdAt: Date;
+  avatar: string;
+  photoId: string;
 }
 const userSchema = new mongoose.Schema(
   {
     name: {
+      type: String,
+      required: true,
+    },
+    avatar: {
+      type: String,
+      required: true,
+    },
+    photoId: {
       type: String,
       required: true,
     },

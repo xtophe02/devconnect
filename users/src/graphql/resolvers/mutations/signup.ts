@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import { User } from '../../../models/user';
 import { Password } from '../../../utils/password';
 import { Cookies } from '../../../utils/cookies';
+import { cloudinaryUpload } from '../../../utils/store-cloudinary';
 
 export const signUp = async (root: any, { data }: any, ctx: any) => {
   const { email, password } = data;
@@ -14,12 +15,16 @@ export const signUp = async (root: any, { data }: any, ctx: any) => {
   }
   try {
     const hashedPassword = await Password.toHash(password);
+    // console.log(ctx.req.body.variables.data.avatar);
+    const upload = await cloudinaryUpload(ctx.req.body.variables.data.avatar);
 
     const newUser = User.build({
       ...data,
       password: hashedPassword,
+      avatar: upload.url,
+      photoId: upload.photoId,
     });
-    //THE SAVE AND PUBLIHSHER SHOULD BE DONE IN MONGODB TRANSACTION
+
     await newUser.save();
 
     const userJwt = jwt.sign(

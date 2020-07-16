@@ -31,12 +31,14 @@
     "mongoose": "^5.9.19",
     "mongoose-update-if-current": "^1.4.0",
     "node-nats-streaming": "^0.3.2",
+    "sharp": "^0.25.4",
     "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.5",
     "yup": "^0.29.1"
   },
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",
+    "@types/sharp": "^0.25.0",
     "@types/yup": "^0.29.3"
   }
 }

@@ -1,7 +1,8 @@
-import React from "react";
-import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
-import { Layout } from "../components";
+import React from 'react';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+import { Layout } from '../components';
+import sharp from 'sharp';
 
 const SINGLEUPLOAD = gql`
   mutation SINGLEUPLOAD($file: Upload) {
@@ -13,7 +14,7 @@ const SINGLEUPLOAD = gql`
 
 const upload = () => {
   // const [file, setFile] = React.useState();
-  const [singleUpload, { data, error }] = useMutation(SINGLEUPLOAD, {
+  const [singleUpload, { data, error, loading }] = useMutation(SINGLEUPLOAD, {
     onCompleted: (data) => console.log(data),
   });
   const handleUpload = ({
@@ -24,7 +25,6 @@ const upload = () => {
   }) => {
     if (validity.valid) {
       // setFile(file);
-      console.log(file);
       singleUpload({
         variables: {
           file: file,
@@ -32,17 +32,19 @@ const upload = () => {
       }).catch((err) => console.log(err));
     }
   };
+  const showImage = (data, loading) => {
+    if (!data) return null;
+    if (data && loading) return <p>loading</p>;
+    return (
+      <figure className='image is-1by1'>
+        <img src={data.singleUpload.url} />
+      </figure>
+    );
+  };
   return (
     <Layout>
-      <input type="file" onChange={handleUpload} />
-      {/* <img
-        src="http://devconnect.dev/flyimg/upload/w_200/https://images.unsplash.com/photo-1594312180721-3b5217cfc65f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        alt=""
-      /> */}
-      {/* <img
-        src="http://flyimg-srv/flyimg/upload/w_200/https://images.unsplash.com/photo-1594312180721-3b5217cfc65f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
-        alt=""
-      /> */}
+      <input type='file' onChange={handleUpload} />
+      {showImage(data, loading)}
     </Layout>
   );
 };

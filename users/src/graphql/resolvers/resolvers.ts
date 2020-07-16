@@ -1,10 +1,8 @@
-import { User, UserAttrs } from "../../models/user";
-
-import { signUp, signIn } from "./mutations";
-import { hello, currentUser } from "./queries";
-import { extname } from "path";
-import mongoose from "mongoose";
-import s3 from "../lib/s3";
+import { User, UserAttrs } from '../../models/user';
+import cloudinary from 'cloudinary';
+import { signUp, signIn, singleUpload, signOut } from './mutations';
+import { hello, currentUser, me } from './queries';
+import { GraphQLScalarType } from 'graphql';
 
 export interface UserData extends UserAttrs {
   data: {
@@ -17,32 +15,16 @@ export interface UserData extends UserAttrs {
 }
 export const resolvers = {
   Query: {
+    me,
     hello,
     currentUser,
   },
   Mutation: {
     signUp,
     signIn,
-    singleUpload: async (root: any, args: any, ctx: any, info: any) => {
-      const file = ctx.req.body.variables.file;
-      console.log(file);
-      // const file = await storeUpload(ctx.req.body.file);
-      const id = mongoose.Types.ObjectId().toHexString();
-      const { createReadStream, filename, mimetype, encoding } = await file;
-
-      const { Location } = await s3
-        //@ts-ignore
-        .upload({
-          Body: createReadStream(),
-          Key: `${id}${extname(filename)}`,
-          ContentType: mimetype,
-        })
-        .promise();
-
-      return { filename, mimetype, encoding, url: Location };
-    },
+    singleUpload,
+    signOut,
   },
-
   User: {
     __resolveReference: async (object: any) => {
       try {
@@ -65,5 +47,39 @@ export const resolvers = {
         };
       }
     },
+    avatar: async (parent: any, { options }: any, ctx: any) => {
+      // let url = await cloudinary.v2.url(parent.avatar);
+      let url = parent.avatar;
+      if (options) {
+        // width: Int, q_auto: Boolean, f_auto: Boolean, face: 'face'
+        const [width, q_auto, f_auto, face] = options;
+
+        const cloudinaryOptions = {
+          ...(q_auto === 'true' && { quality: 'auto' }),
+          ...(f_auto === 'true' && { fetch_format: 'auto' }),
+          ...(face && { crop: 'thumb', gravity: 'face' }),
+          width,
+          secure: true,
+        };
+
+        url = await cloudinary.v2.url(parent.photoId, cloudinaryOptions);
+
+        console.log('url', url);
+      }
+      return url;
+    },
   },
+  CloudinaryOptions: new GraphQLScalarType({
+    name: 'CloudinaryOptions',
+    parseValue(value) {
+      return value;
+    },
+    serialize(value) {
+      return value;
+    },
+    parseLiteral(ast) {
+      //@ts-ignore
+      return ast.value.split(',');
+    },
+  }),
 };

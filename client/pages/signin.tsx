@@ -3,6 +3,7 @@ import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { useRouter } from 'next/router';
+import { Layout } from '../components';
 
 const SIGNIN = gql`
   mutation SIGNIN($data: SignInInput!) {
@@ -30,12 +31,12 @@ const SignIn = () => {
   };
   console.log('useMutation', data);
   return (
-    <>
+    <Layout title='Sign In'>
       Sign In {data && data.signIn.email}
       <form onSubmit={handleSubmit}>
         <button type='submit'>Sign In</button>
       </form>
-    </>
+    </Layout>
   );
 };
 

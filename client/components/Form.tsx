@@ -38,12 +38,6 @@ export const Form = ({ values, handleChange }) => {
         name='password'
         handleChange={handleChange}
       />
-
-      <div className='field'>
-        <p className='control'>
-          <button className='button is-success'>Login</button>
-        </p>
-      </div>
     </>
   );
 };
