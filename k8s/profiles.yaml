@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: profiles-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: profiles
+  template:
+    metadata:
+      labels:
+        app: profiles
+    spec:
+      containers:
+        - name: profiles
+          # imagePullPolicy: Never
+          # image: us.gcr.io/ticketing-dev/auth
+          image: xtophe02/devconnector-profiles
+          env:
+            - name: CLOUD_NAME
+              value: chrismo
+            - name: CLOUD_API_KEY
+              value: '891396345568939'
+            - name: CLOUD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-secret
+                  key: CLOUD_SECRET
+            # - name: AWS_S3_REGION
+            #   value: 'eu-west-3'
+            # - name: AWS_S3_BUCKET
+            #   value: 'cmo-aws'
+            # - name: AWS_ACCESS_KEY_ID
+            #   value: 'AKIAIGD7HEBT7MVQBEKA'
+            # - name: AWS_ACCESS_KEY_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: aws-secret
+            #       key: AWS_ACCESS_KEY_SECRET
+            - name: PORT
+              value: '4000'
+            - name: PROFILES_MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: profiles-mongo-secret
+                  key: PROFILES_MONGO_URI
+
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: profiles-srv
+spec:
+  # type: NodePort
+  selector:
+    app: profiles
+  ports:
+    - port: 4000
+      targetPort: 4000
+      protocol: TCP
+      name: profiles
+      # nodePort: 31515
