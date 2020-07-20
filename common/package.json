@@ -1,0 +1,26 @@
+{
+  "name": "@cmdevconnect/common",
+  "version": "1.0.4",
+  "description": "",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "files": [
+    "build/**/*"
+  ],
+  "scripts": {
+    "clean": "del ./build/*",
+    "build": "npm run clean && tsc",
+    "pub": "git add . && git commit -m \"Updates\" && npm version patch && npm run build && npm publish"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "del-cli": "^3.0.1",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "node-nats-streaming": "^0.3.2"
+  }
+}
