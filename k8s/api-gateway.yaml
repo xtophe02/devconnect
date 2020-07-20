@@ -20,6 +20,8 @@ spec:
           env:
             - name: USERS_URL
               value: 'http://users-srv:4000/graphql'
+            - name: PROFILES_URL
+              value: 'http://profiles-srv:4000/graphql'
             - name: POSTS_URL
               value: 'http://posts-srv:4000/graphql'
             - name: JWT_KEY

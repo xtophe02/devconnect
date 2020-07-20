@@ -3,8 +3,11 @@ import gql from 'graphql-tag';
 const typeDefs = gql`
   extend type Query {
     hello: String
-    me: User
     currentUser: User
+  }
+  type Error @key(fields: "status") @key(fields: "message") {
+    status: Int
+    message: String
   }
   extend type Mutation {
     signUp(data: SignUpInput!): User!
@@ -13,7 +16,7 @@ const typeDefs = gql`
     singleUpload(file: Upload): UploadedFileResponse
     multipleUpload(files: [Upload]): UploadedFileResponse
   }
-  type User @key(fields: "id") {
+  type User @key(fields: "id") @key(fields: "email") {
     id: ID!
     name: String!
     username: String!

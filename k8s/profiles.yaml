@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: users-dep
+  name: profiles-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: users
+      app: profiles
   template:
     metadata:
       labels:
-        app: users
+        app: profiles
     spec:
       containers:
-        - name: users
+        - name: profiles
           # imagePullPolicy: Never
           # image: us.gcr.io/ticketing-dev/auth
-          image: xtophe02/devconnector-users
+          image: xtophe02/devconnector-profiles
           env:
             - name: CLOUD_NAME
               value: chrismo
@@ -40,11 +40,11 @@ spec:
             #       key: AWS_ACCESS_KEY_SECRET
             - name: PORT
               value: '4000'
-            - name: USERS_MONGO_URI
+            - name: PROFILES_MONGO_URI
               valueFrom:
                 secretKeyRef:
-                  name: users-mongo-secret
-                  key: USERS_MONGO_URI
+                  name: profiles-mongo-secret
+                  key: PROFILES_MONGO_URI
 
             - name: JWT_KEY
               valueFrom:
@@ -55,14 +55,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: users-srv
+  name: profiles-srv
 spec:
   # type: NodePort
   selector:
-    app: users
+    app: profiles
   ports:
     - port: 4000
       targetPort: 4000
       protocol: TCP
-      name: users
+      name: profiles
       # nodePort: 31515
