@@ -21,7 +21,7 @@ spec:
             - name: CLOUD_NAME
               value: chrismo
             - name: CLOUD_API_KEY
-              value: '891396345568939'
+              value: "891396345568939"
             - name: CLOUD_SECRET
               valueFrom:
                 secretKeyRef:
@@ -39,7 +39,7 @@ spec:
             #       name: aws-secret
             #       key: AWS_ACCESS_KEY_SECRET
             - name: PORT
-              value: '4000'
+              value: "4000"
             - name: USERS_MONGO_URI
               valueFrom:
                 secretKeyRef:

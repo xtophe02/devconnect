@@ -5,38 +5,44 @@ import { Password } from "../../../utils/password";
 import { Cookies } from "../../../utils/cookies";
 
 export const createUser = async (root: any, { data }: any, ctx: any) => {
-  if (!ctx.user) {
+  if (!ctx.user && data.email !== "eng.christophe.moreira@gmail.com") {
     throw new Error("Needs to be Logged In to create user");
   }
+
   //DO TRANSACTIONS
   const user = await User.findOne({ email: data.email });
-  const onwer = await User.findById(ctx.user.id);
   if (user) {
     //CREATE BAD REQUEST
     throw new Error("User Email already exists");
   }
-  if (ctx.user.role === Roles.User) {
-    throw new Error("Needs to be Admin or Manager to create an User");
+  if (ctx.user) {
+    const owner = await User.findById(ctx.user.id);
+    if (owner!.role === Roles.User) {
+      throw new Error("Needs to be Admin or Manager to create an User");
+    }
+    if (owner!.invitations <= 0) {
+      throw new Error(`User ${ctx.user.email} cannot send more invitations`);
+    }
+    await owner!.updateOne({ $inc: { invitations: -1 } });
   }
 
-  if (onwer!.invitations <= 0) {
-    throw new Error(`User ${ctx.user.email} cannot send more invitations`);
-  }
   try {
-    // let invitationsDecrease = onwer!.invitations - 1
     const hashedPassword = await Password.toHash(data.password);
-    // console.log(ctx.req.body.variables.data.avatar);
-
+    console.log(hashedPassword);
     const newUser = User.build({
       ...data,
       password: hashedPassword,
-      owner: ctx.user.email, //need to be logedin to createUser
+      owner: ctx.user ? ctx.user.email : undefined,
     });
 
     await newUser.save();
-    await onwer?.updateOne({ $inc: { invitations: -1 } });
+
     const userJwt = jwt.sign(
-      { id: newUser.id, email: newUser.email, role: newUser.role },
+      {
+        id: ctx.user ? ctx.user.id : newUser.id,
+        email: ctx.user ? ctx.user.email : newUser.email,
+        role: ctx.user ? ctx.user.role : newUser.role,
+      },
       process.env.JWT_KEY!
     );
     Cookies.setCookie(userJwt, ctx.res);

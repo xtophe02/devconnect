@@ -1,6 +1,6 @@
 import { User } from "../../models/user";
 
-import { createUser, logInUser } from "./mutations";
+import { createUser, logInUser, editUser, logOutUser } from "./mutations";
 import { allUsers, currentUser } from "./queries";
 
 export const resolvers = {
@@ -10,11 +10,14 @@ export const resolvers = {
   },
   Mutation: {
     createUser,
-    // editUser,
+    editUser,
     logInUser,
-    // logOutUser,
+    logOutUser,
   },
   User: {
-    __resolveReference: async (object: any) => User.findById(object.id),
+    __resolveReference: async (object: any) => {
+      console.log("aki", object);
+      return User.findById(object.id);
+    },
   },
 };

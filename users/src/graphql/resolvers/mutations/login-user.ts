@@ -10,11 +10,12 @@ export const logInUser = async (root: any, { data }: any, ctx: any) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      throw new Error("Email/Password not correct");
+      throw new Error("Email not found");
     }
+
     const comparePassword = await Password.compare(user.password, password);
     if (!comparePassword) {
-      throw new Error("Email/Password not correct");
+      throw new Error("Password not correct");
     }
     const userJwt = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
