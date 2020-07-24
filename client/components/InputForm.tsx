@@ -1,5 +1,5 @@
-import React from 'react';
-
+import React from "react";
+import { capitalize } from "../utils/capitalize";
 export const InputForm = ({
   type,
   placeholder,
@@ -8,19 +8,20 @@ export const InputForm = ({
   handleChange,
   name,
 }) => {
-  const [fasIcon, setFasIcon] = React.useState('fas fa-eye-slash');
+  const [fasIcon, setFasIcon] = React.useState("fas fa-eye-slash");
   return (
-    <div className='field'>
-      <p className='control has-icons-left has-icons-right'>
+    <div className="field">
+      <label className="label">{capitalize(name)}</label>
+      <p className="control has-icons-left has-icons-right">
         <input
-          className='input'
+          className="input"
           type={type}
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
           name={name}
         />
-        <span className='icon is-small is-left'>
+        <span className="icon is-small is-left">
           <i className={`fas ${icon}`}></i>
         </span>
       </p>

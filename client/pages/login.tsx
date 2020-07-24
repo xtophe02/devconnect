@@ -1,9 +1,9 @@
 import React from "react";
 
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { Layout, Form } from "../components";
+import { Layout, Form, ButtonsSubmit } from "../components";
 
 const LOGIN = gql`
   mutation LOGINUSER($data: LogInUserInput) {
@@ -48,18 +48,7 @@ const SignIn = () => {
     <Layout title="Sign In">
       <form onSubmit={handleSubmit}>
         <Form values={state} handleChange={handleState} />
-        <div className="field is-grouped">
-          <p className="control">
-            <button className="button is-primary" type="submit">
-              Submit
-            </button>
-          </p>
-          <p className="control">
-            <a className="button is-light" onClick={() => router.back()}>
-              Cancel
-            </a>
-          </p>
-        </div>
+        <ButtonsSubmit />
       </form>
       {error && error.message}
     </Layout>

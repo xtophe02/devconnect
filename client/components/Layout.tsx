@@ -1,8 +1,8 @@
-import React from 'react';
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import React from "react";
+import gql from "graphql-tag";
+import { useQuery } from "@apollo/client";
 
-import NavBar from './NavBar';
+import NavBar from "./NavBar";
 
 const CURRENTUSER = gql`
   query {
@@ -14,11 +14,11 @@ const CURRENTUSER = gql`
 
 export const Layout = ({
   children,
-  title = 'to define',
-  subtitle = 'to define',
+  title = "to define",
+  subtitle = "to define",
 }) => {
   const { loading, error, data } = useQuery(CURRENTUSER, {
-    fetchPolicy: 'network-only',
+    fetchPolicy: "network-only",
   });
 
   const teste = data && data.currentUser ? data.currentUser.email : null;
@@ -26,15 +26,15 @@ export const Layout = ({
   return (
     <>
       <NavBar loading={loading} email={teste} />
-      <section className='hero'>
-        <div className='hero-body'>
-          <div className='container'>
-            <h1 className='title'>{title}</h1>
-            <h2 className='subtitle'>{subtitle}</h2>
+      <section className="hero">
+        <div className="hero-body">
+          <div className="container">
+            <h1 className="title">{title}</h1>
+            <h2 className="subtitle">{subtitle}</h2>
           </div>
         </div>
       </section>
-      <div className='container'>{children}</div>
+      <div className="container">{children}</div>
     </>
   );
 };

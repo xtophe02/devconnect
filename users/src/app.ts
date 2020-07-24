@@ -36,7 +36,7 @@ const server = new ApolloServer({
   // schema,
   context: async ({ req, res }) => {
     const user = await getUserId(req);
-
+    // console.log(req.headers);
     return {
       user,
       req,

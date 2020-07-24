@@ -1,8 +1,8 @@
-import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import { Layout } from '../components';
-import sharp from 'sharp';
+import React from "react";
+import { useMutation } from "@apollo/client";
+import gql from "graphql-tag";
+import { Layout } from "../components";
+import sharp from "sharp";
 
 const SINGLEUPLOAD = gql`
   mutation SINGLEUPLOAD($file: Upload) {
@@ -36,14 +36,14 @@ const upload = () => {
     if (!data) return null;
     if (data && loading) return <p>loading</p>;
     return (
-      <figure className='image is-1by1'>
+      <figure className="image is-1by1">
         <img src={data.singleUpload.url} />
       </figure>
     );
   };
   return (
     <Layout>
-      <input type='file' onChange={handleUpload} />
+      <input type="file" onChange={handleUpload} />
       {showImage(data, loading)}
     </Layout>
   );

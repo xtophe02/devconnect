@@ -1,9 +1,6 @@
 import gql from "graphql-tag";
 
 const typeDefs = gql`
-  extend type Query {
-    me: Profile
-  }
   extend type Mutation {
     createProfile(data: CreateProfileInput): CreaProfileResponse
   }
@@ -39,6 +36,7 @@ const typeDefs = gql`
     skills: [String]
     githubUsername: String
     social: SocialInput
+    photoId: String
   }
   input SocialInput {
     facebook: String

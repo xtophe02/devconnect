@@ -6,19 +6,15 @@ export const createProfile = async (
   info: any
 ) => {
   try {
-    console.log(ctx.user);
     if (!ctx.user) {
       throw new Error("please to signin");
     }
-    // const profile = await Profile.findById(ctx.user.id);
-    // if (!profile) {
-    //   throw new Error('please to sign');
-    // }
+    const newProfile = await Profile.build({ userId: ctx.user.id, ...data });
+    await newProfile.save();
 
-    console.log(data);
     return {
       success: true,
-      data: { userId: { id: ctx.user.id }, username: data.username },
+      data: newProfile,
       error: null,
     };
   } catch (e) {

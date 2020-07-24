@@ -16,7 +16,7 @@ export const resolvers = {
   },
   User: {
     __resolveReference: async (object: any) => {
-      console.log("aki", object);
+      console.log("UsersREF:", object);
       return User.findById(object.id);
     },
   },

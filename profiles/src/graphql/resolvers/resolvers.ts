@@ -1,36 +1,19 @@
-import cloudinary from 'cloudinary';
-import { createProfile } from './mutations';
-import { me } from './queries';
-import { GraphQLScalarType } from 'graphql';
+import cloudinary from "cloudinary";
+import { createProfile } from "./mutations";
+import { GraphQLScalarType } from "graphql";
+import { Profile } from "../../models/profile";
 
 export const resolvers = {
-  Query: {
-    me,
-  },
+  Query: {},
   Mutation: {
     createProfile,
   },
+  User: {
+    profile: async (user: any) => Profile.findOne({ userId: user.id }),
+  },
   Profile: {
-    __resolveReference: async (object: any) => {
-      try {
-        // const userCollection = await Profile.findById(object.id);
-
-        return {
-          success: true,
-          data: null,
-          error: null,
-        };
-      } catch (e) {
-        console.log(e);
-
-        return {
-          success: false,
-          error: {
-            status: 500,
-            message: e,
-          },
-        };
-      }
+    userId: async (profile: any) => {
+      return { __typename: "User", id: profile.userId };
     },
     avatar: async (parent: any, { options }: any, ctx: any) => {
       // let url = await cloudinary.v2.url(parent.avatar);
@@ -40,22 +23,22 @@ export const resolvers = {
         const [width, q_auto, f_auto, face] = options;
 
         const cloudinaryOptions = {
-          ...(q_auto === 'true' && { quality: 'auto' }),
-          ...(f_auto === 'true' && { fetch_format: 'auto' }),
-          ...(face && { crop: 'thumb', gravity: 'face' }),
+          ...(q_auto === "true" && { quality: "auto" }),
+          ...(f_auto === "true" && { fetch_format: "auto" }),
+          ...(face && { crop: "thumb", gravity: "face" }),
           width,
           secure: true,
         };
 
         url = await cloudinary.v2.url(parent.photoId, cloudinaryOptions);
 
-        console.log('url', url);
+        console.log("url", url);
       }
       return url;
     },
   },
   CloudinaryOptions: new GraphQLScalarType({
-    name: 'CloudinaryOptions',
+    name: "CloudinaryOptions",
     parseValue(value) {
       return value;
     },
@@ -64,7 +47,7 @@ export const resolvers = {
     },
     parseLiteral(ast) {
       //@ts-ignore
-      return ast.value.split(',');
+      return ast.value.split(",");
     },
   }),
 };

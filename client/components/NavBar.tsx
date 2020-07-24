@@ -1,12 +1,13 @@
 import React from "react";
 import Link from "next/link";
-import SignUp from "../pages/signup";
-import { useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 
 const NavBarItems = ({ myHref, link, myClassName }) => (
   <Link href={myHref}>
-    <a className={myClassName}>{link}</a>
+    <a className={myClassName}>
+      <strong>{link}</strong>
+    </a>
   </Link>
 );
 const SIGNOUT = gql`
@@ -19,7 +20,7 @@ const NavBar = ({ loading, email }) => {
   const [signOut, { data }] = useMutation(SIGNOUT, {
     onCompleted: (data) => console.log(data),
   });
-  console.log(email);
+  console.log("NAVBAR FIRED");
   return (
     <nav className="navbar is-transparent">
       <div className="navbar-brand">
@@ -45,30 +46,28 @@ const NavBar = ({ loading, email }) => {
         <div className="navbar-start">
           <NavBarItems myHref="/" link="Home" myClassName="navbar-item" />
           <NavBarItems
-            myHref="/signup"
-            link="Sign Up"
+            myHref="/current-user"
+            link="Profile"
             myClassName="navbar-item"
           />
-          <NavBarItems myHref="/user" link="User" myClassName="navbar-item" />
         </div>
-        {email}
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="navbar-item">
               <div className="buttons">
-                <a
-                  className={`button is-primary ${loading ? "is-loading" : ""}`}
-                >
-                  <strong>Sign up</strong>
-                </a>
-                <a className={`button is-primary`} onClick={() => signOut()}>
-                  <strong>Sign Out</strong>
-                </a>
+                <NavBarItems
+                  myHref="/create-user"
+                  link="Create User"
+                  myClassName="button is-light"
+                />
                 <NavBarItems
                   myHref="/login"
                   link="Log In"
-                  myClassName="button is-light"
+                  myClassName="button is-primary"
                 />
+                <a className={`button is-danger`} onClick={() => signOut()}>
+                  <strong>Sign Out</strong>
+                </a>
               </div>
             </div>
           </div>

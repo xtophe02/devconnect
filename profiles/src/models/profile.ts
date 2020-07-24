@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 export interface ProfileAttrs {
   name: string;
@@ -64,9 +64,11 @@ const ProfileSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+ProfileSchema.statics.build = (attrs: ProfileAttrs) => {
+  return new Profile(attrs);
+};
 const Profile = mongoose.model<ProfileDoc, ProfileModel>(
-  'Profile',
+  "Profile",
   ProfileSchema
 );
 
