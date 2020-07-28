@@ -20,7 +20,7 @@
     "graphql-middleware": "^4.0.2",
     "jsonwebtoken": "^8.5.1",
     "mkdirp": "^1.0.4",
-    "mongoose": "^5.9.19",
+    "mongoose": "^5.9.25",
     "ts-node-dev": "^1.0.0-pre.49",
     "typescript": "^3.9.5",
     "yup": "^0.29.1"

@@ -1,8 +1,6 @@
-import { Cookies } from "../../../utils/cookies";
+import { Cookies } from '../../../utils/cookies';
 
 export const logOutUser = async (root: any, args: any, ctx: any) => {
-  //TODO inputs validation
-
   try {
     Cookies.removeTokenCookie(ctx.res);
 
@@ -13,7 +11,7 @@ export const logOutUser = async (root: any, args: any, ctx: any) => {
       success: false,
       error: {
         status: 500,
-        message: e,
+        message: e.message,
       },
     };
   }

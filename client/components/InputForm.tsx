@@ -1,27 +1,27 @@
-import React from "react";
-import { capitalize } from "../utils/capitalize";
+import React from 'react';
+import { capitalize } from '../utils/capitalize';
 export const InputForm = ({
-  type,
-  placeholder,
-  icon,
-  value,
-  handleChange,
-  name,
+  type = 'text',
+  placeholder = 'def',
+  icon = 'def',
+  value = 'def',
+  handleChange = 'def',
+  name = 'def',
 }) => {
-  const [fasIcon, setFasIcon] = React.useState("fas fa-eye-slash");
+  const [fasIcon, setFasIcon] = React.useState('fas fa-eye-slash');
   return (
-    <div className="field">
-      <label className="label">{capitalize(name)}</label>
-      <p className="control has-icons-left has-icons-right">
+    <div className='field'>
+      <label className='label'>{capitalize(name)}</label>
+      <p className='control has-icons-left'>
         <input
-          className="input"
+          className='input'
           type={type}
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
           name={name}
         />
-        <span className="icon is-small is-left">
+        <span className='icon is-small is-left'>
           <i className={`fas ${icon}`}></i>
         </span>
       </p>
