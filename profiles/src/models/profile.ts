@@ -37,10 +37,13 @@ const ProfileSchema = new mongoose.Schema(
     location: {
       type: String,
     },
+    name: {
+      type: String,
+    },
     skills: {
       type: [String],
     },
-    githubusername: {
+    githubUsername: {
       type: String,
     },
     username: {

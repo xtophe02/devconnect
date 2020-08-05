@@ -39,6 +39,7 @@ const SignUp = () => {
     });
   };
   const selectChange = (e) => {
+    console.log(e.target.value);
     setState({ ...state, role: e.target.value });
   };
   // const handleFile = ({
@@ -78,15 +79,13 @@ const SignUp = () => {
               <div className="control">
                 <div className="select">
                   <select onChange={selectChange} value={state.role}>
-                    <option value={Roles.Admin}>
+                    <option disabled value={Roles.Admin}>
                       {capitalize(Roles.Admin)}
                     </option>
                     <option value={Roles.Manager}>
                       {capitalize(Roles.Manager)}
                     </option>
-                    <option defaultValue={Roles.User}>
-                      {capitalize(Roles.User)}
-                    </option>
+                    <option value={Roles.User}>{capitalize(Roles.User)}</option>
                   </select>
                 </div>
               </div>

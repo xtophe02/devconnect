@@ -1,6 +1,6 @@
 import { Profile } from "../../../models/profile";
 import { cloudinaryUpload } from "../../../utils/store-cloudinary";
-export const createProfile = async (
+export const editProfile = async (
   root: any,
   { data }: any,
   ctx: any,
@@ -14,18 +14,21 @@ export const createProfile = async (
     if (data.avatar) {
       file = await cloudinaryUpload(data.avatar);
     }
-
-    const newProfile = await Profile.build({
-      ...data,
-      userId: ctx.user.id,
-      photoId: file ? file.photoId : "",
-      avatar: file ? file.url : "",
-    });
-    await newProfile.save();
+    const profileUser = Profile.findOneAndUpdate(
+      { userId: ctx.user.id },
+      {
+        $set: {
+          ...data,
+          photoId: file ? file.photoId : "",
+          avatar: file ? file.url : "",
+        },
+      },
+      { new: true }
+    );
 
     return {
       success: true,
-      data: newProfile,
+      data: profileUser,
       error: null,
     };
   } catch (e) {

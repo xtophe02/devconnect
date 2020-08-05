@@ -1,8 +1,8 @@
-import React from 'react';
-import { Layout } from '../components';
-import { gql } from '@apollo/client';
-import { initializeApollo } from '../apollo/client';
-import Profile from '../components/Profile';
+import React from "react";
+import { Layout } from "../components";
+import { gql } from "@apollo/client";
+import { initializeApollo } from "../apollo/client";
+import Profile from "../components/Profile";
 
 const CURRENTUSER = gql`
   query CURRENTUSER {
@@ -38,24 +38,26 @@ const currentUser = ({ currentUser }) => {
   const { success, data, error } = currentUser;
 
   return (
-    <Layout title='Current User'>
+    <Layout title="Current User">
       {error && <h1>{error.message}</h1>}
       <h1>{success && data.email}</h1>
       <h1>invitations: {success && data.invitations}</h1>
       <h1>role: {success && data.role}</h1>
+      <h1>name: {success && data.name}</h1>
       <h1>
         {!error && success && data.profile
           ? data.profile.username
-          : 'no profile'}
+          : "no profile"}
       </h1>
       <button
-        className='button mt-4 mb-4'
+        className="button mt-4 mb-4"
         disabled={!success && true}
         onClick={() => setFlag(!flag)}
       >
         Add/Edit Profile
       </button>
-      {flag && <Profile profile={data.profile ? data.profile : null} />}
+
+      {flag && <Profile profile={data.profile} flag={flag} setFlag={setFlag} />}
     </Layout>
   );
 };
