@@ -6,10 +6,20 @@ import Profile from "../components/Profile";
 import { create } from "domain";
 import { capitalize } from "../utils/capitalize";
 import { useRouter } from "next/router";
-import { route } from "next/dist/next-server/server/router";
+import { CURRENTUSER } from "./current-user";
 
 const createProfile = () => {
-  return <Layout title="to define" subtitle="to defibne"></Layout>;
+  const apolloClient = initializeApollo();
+  // const teste = apolloClient.readQuery({
+  //   query: CURRENTUSER,
+  //   // variables: allPostsQueryVars,
+  // });
+  // console.log(teste);
+  return (
+    <Layout title="to define" subtitle="to defibne">
+      aki
+    </Layout>
+  );
 };
 // export async function getServerSideProps({ req }) {
 //   try {

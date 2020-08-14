@@ -2,6 +2,7 @@ import gql from "graphql-tag";
 
 const typeDefs = gql`
   extend type Query {
+    hello: String
     allUsers: allUsersResponse
     currentUser: currentUserResponse
   }
@@ -44,6 +45,7 @@ const typeDefs = gql`
   }
   type LogInUserResponse {
     success: Boolean
+    data: User
     error: Error
   }
   type LogOutUserResponse {

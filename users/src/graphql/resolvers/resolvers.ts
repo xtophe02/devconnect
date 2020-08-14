@@ -5,6 +5,10 @@ import { allUsers, currentUser } from "./queries";
 
 export const resolvers = {
   Query: {
+    hello: (root: any, args: any, ctx: any) => {
+      console.log("ali", ctx.user);
+      return "hello world";
+    },
     allUsers,
     currentUser,
   },

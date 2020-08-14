@@ -1,18 +1,14 @@
 import React from "react";
+
 import { useMutation } from "@apollo/client";
-import { gql } from "@apollo/client";
+import gql from "graphql-tag";
 import { useRouter } from "next/router";
-import { Layout, Form } from "../components";
-import { isLoggedInVar } from "../apollo/cache";
+import { Layout, Form, ButtonsSubmit } from "../components";
 
 const LOGIN = gql`
   mutation LOGINUSER($data: LogInUserInput) {
     logInUser(data: $data) {
       success
-      data {
-        email
-        role
-      }
       error {
         message
       }
@@ -26,12 +22,8 @@ const initState = {
 const SignIn = () => {
   const router = useRouter();
   const [state, setState] = React.useState(initState);
-  const [signIn, { error }] = useMutation(LOGIN, {
-    onCompleted: ({ logInUser }) => {
-      localStorage.setItem("userEmail", logInUser.data.email as string);
-      isLoggedInVar(true);
-      router.push("/");
-    },
+  const [signIn, { data, error }] = useMutation(LOGIN, {
+    onCompleted: () => router.push("/"),
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,6 +48,7 @@ const SignIn = () => {
     <Layout title="Sign In">
       <form onSubmit={handleSubmit}>
         <Form values={state} handleChange={handleState} />
+        <ButtonsSubmit />
       </form>
       {error && error.message}
     </Layout>

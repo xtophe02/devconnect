@@ -1,8 +1,7 @@
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 
 const typeDefs = gql`
   extend type Query {
-    hello2: String
     posts: [Post]
   }
   extend type Mutation {

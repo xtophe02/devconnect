@@ -1,18 +1,29 @@
 import { useMemo } from "react";
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import { createUploadLink } from "apollo-upload-client";
-import { cache } from "./cache";
+import { persistCache } from "apollo-cache-persist";
 
 let apolloClient;
 const ssrMode = typeof window === "undefined";
-function createApolloClient() {
+function createApolloClient(initialState) {
+  const cache = new InMemoryCache();
+  // cache.modify
+
+  if (!ssrMode) {
+    persistCache({
+      cache,
+      storage: window.localStorage,
+    });
+  }
+
   return new ApolloClient({
     ssrMode: ssrMode,
     link: createUploadLink({
       uri: ssrMode ? "http://api-gateway-srv:4000/graphql" : "/graphql",
       credentials: "same-origin",
+      ...initialState,
     }),
-    cache: ssrMode ? new InMemoryCache() : cache,
+    cache,
     defaultOptions: {
       query: {
         // fetchPolicy: 'network-only',
@@ -23,7 +34,7 @@ function createApolloClient() {
 }
 
 export function initializeApollo(initialState = null) {
-  const _apolloClient = apolloClient ?? createApolloClient();
+  const _apolloClient = apolloClient ?? createApolloClient(initialState);
   // If your page has Next.js data fetching methods that use Apollo Client, the initial state
   // gets hydrated here
   if (initialState) {
