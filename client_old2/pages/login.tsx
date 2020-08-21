@@ -3,7 +3,7 @@ import { useMutation } from "@apollo/client";
 import { gql } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Layout, Form } from "../components";
-import { isLoggedInVar } from "../apollo/cache";
+import { userLoggedInVar } from "../apollo/cache";
 
 const LOGIN = gql`
   mutation LOGINUSER($data: LogInUserInput) {
@@ -26,10 +26,10 @@ const initState = {
 const SignIn = () => {
   const router = useRouter();
   const [state, setState] = React.useState(initState);
-  const [signIn, { error }] = useMutation(LOGIN, {
+  const [signIn, { error, loading }] = useMutation(LOGIN, {
     onCompleted: ({ logInUser }) => {
       localStorage.setItem("userEmail", logInUser.data.email as string);
-      isLoggedInVar(true);
+      userLoggedInVar(logInUser.data.email);
       router.push("/");
     },
   });
@@ -55,7 +55,7 @@ const SignIn = () => {
   return (
     <Layout title="Sign In">
       <form onSubmit={handleSubmit}>
-        <Form values={state} handleChange={handleState} />
+        <Form values={state} handleChange={handleState} loading={loading} />
       </form>
       {error && error.message}
     </Layout>

@@ -1,5 +1,5 @@
 import { useApolloClient } from "@apollo/client";
-import { isLoggedInVar } from "../../apollo/cache";
+import { isLoggedInVar, userLoggedInVar } from "../../apollo/cache";
 import { LOGOUTUSER } from "../../queries";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -30,6 +30,7 @@ export const LogoutButton = () => {
         // Let other parts of the application that are relying on logged in
         // state know we're now logged out.
         isLoggedInVar(false);
+        userLoggedInVar("");
         logOutUser();
       }}
     >

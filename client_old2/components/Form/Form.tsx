@@ -2,7 +2,7 @@ import React from "react";
 import { InputForm } from "./InputForm";
 import { ButtonsSubmit } from "./ButtonsSubmit";
 
-export const Form = ({ values, handleChange }) => {
+export const Form = ({ values, handleChange, loading, profile = false }) => {
   const { email, password } = values;
 
   return (
@@ -23,7 +23,19 @@ export const Form = ({ values, handleChange }) => {
         name="password"
         handleChange={handleChange}
       />
-      <ButtonsSubmit />
+      {profile && (
+        <>
+          <InputForm
+            type="text"
+            placeholder="Name"
+            icon="fa-user"
+            value=""
+            name="name"
+            handleChange={handleChange}
+          />
+        </>
+      )}
+      <ButtonsSubmit loading={loading} />
     </>
   );
 };

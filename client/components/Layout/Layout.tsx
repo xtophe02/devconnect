@@ -1,32 +1,18 @@
-import React from "react";
+import { Container, Typography, Box } from "@material-ui/core";
 import NavBar from "./NavBar";
-import Title from "./Title";
 
-export const Layout = ({ children, title, subtitle }) => {
+export const Layout = ({ children, title = "to set" }) => {
   return (
     <>
       <NavBar />
-      <Title title={title} subtitle={subtitle} />
-      <div className="container">{children}</div>
+      <Container maxWidth="sm">
+        <Box my={4}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            {title}
+          </Typography>
+          {children}
+        </Box>
+      </Container>
     </>
   );
 };
-// export async function getServerSideProps({ req }) {
-//   try {
-//     const apolloClient = initializeApollo({ test: "sss" });
-//     const data = await apolloClient.query({
-//       query: CURRENTUSER,
-//       // variables: allPostsQueryVars,
-//     });
-//     console.log("data", data);
-//     return {
-//       props: {
-//         // initialApolloState: apolloClient.cache.extract(),
-//         ...data,
-//       },
-//       // unstable_revalidate: 1,
-//     };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }

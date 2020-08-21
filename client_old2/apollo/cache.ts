@@ -1,6 +1,6 @@
 import { InMemoryCache } from "@apollo/client";
 const ssrMode = typeof window === "undefined";
-// import { persistCache } from "apollo-cache-persist";
+import { persistCache } from "apollo-cache-persist";
 
 export const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
@@ -22,6 +22,14 @@ export const cache: InMemoryCache = new InMemoryCache({
 //     storage: window.localStorage,
 //   });
 // }
+// export const isLoggedInVar = () => {
+//   if (ssrMode) return;
+//   return cache.makeVar<boolean>(!!localStorage.getItem("userEmail"));
+// };
+// export const userLoggedInVar = () => {
+//   if (ssrMode) return;
+//   return cache.makeVar<string>(localStorage.getItem("userEmail"));
+// };
 export const userLoggedInVar = ssrMode
   ? null
   : cache.makeVar<string>(localStorage.getItem("userEmail"));
