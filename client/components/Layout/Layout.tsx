@@ -5,7 +5,7 @@ export const Layout = ({ children, title = "to set" }) => {
   return (
     <>
       <NavBar />
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Box my={4}>
           <Typography variant="h4" component="h1" gutterBottom>
             {title}

@@ -52,3 +52,18 @@ export const LOGOUTUSER = gql`
     }
   }
 `;
+
+export const LOGIN = gql`
+  mutation LOGINUSER($data: LogInUserInput) {
+    logInUser(data: $data) {
+      success
+      data {
+        email
+        role
+      }
+      error {
+        message
+      }
+    }
+  }
+`;
