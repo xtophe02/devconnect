@@ -13,7 +13,7 @@ import {
 
 import { TransitionProps } from "@material-ui/core/transitions";
 
-import { LoginForm } from "../Form/LoginForm";
+import { LoginForm } from "./LoginForm";
 import { isLoggedInVar } from "../../apollo/cache";
 import { LOGIN } from "../../src/queries";
 
@@ -29,14 +29,18 @@ interface State {
   email: string;
   showPassword: boolean;
 }
-
-export const Login = ({ open, setOpen }) => {
+const initState = {
+  password: "",
+  email: "",
+  showPassword: false,
+};
+export const Login = ({ openDialog, setOpenDialog }) => {
   const [signIn, { error, loading }] = useMutation(LOGIN, {
     onCompleted: ({ logInUser }) => {
       localStorage.setItem("userEmail", logInUser.data.email as string);
       // userLoggedInVar(logInUser.data.email);
       isLoggedInVar(logInUser.success);
-      setOpen(!open);
+      setOpenDialog(!openDialog);
     },
   });
   const handleSubmit = async (e) => {
@@ -51,15 +55,14 @@ export const Login = ({ open, setOpen }) => {
           },
         },
       });
+      setValues({ ...initState });
     } catch (error) {
       console.log(error);
     }
   };
 
   const [values, setValues] = React.useState<State>({
-    password: "",
-    email: "",
-    showPassword: false,
+    ...initState,
   });
 
   const handleChange = (prop: keyof State) => (
@@ -74,7 +77,7 @@ export const Login = ({ open, setOpen }) => {
 
   return (
     <Dialog
-      open={open}
+      open={openDialog}
       TransitionComponent={Transition}
       keepMounted
       // onClose={() => setOpen(!open)}
@@ -95,7 +98,7 @@ export const Login = ({ open, setOpen }) => {
         {error && JSON.stringify(error)}
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpen(!open)} color="primary">
+        <Button onClick={() => setOpenDialog(!openDialog)} color="primary">
           Cancel
         </Button>
         <Button onClick={handleSubmit} color="secondary">

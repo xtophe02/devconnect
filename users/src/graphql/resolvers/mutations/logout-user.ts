@@ -1,6 +1,9 @@
-import { Cookies } from '../../../utils/cookies';
+import { Cookies } from "../../../utils/cookies";
 
 export const logOutUser = async (root: any, args: any, ctx: any) => {
+  if (!ctx.user) {
+    return { success: false, error: null };
+  }
   try {
     Cookies.removeTokenCookie(ctx.res);
 
