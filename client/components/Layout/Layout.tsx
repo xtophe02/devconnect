@@ -21,7 +21,6 @@ import {
   ListItemText,
   ListItemIcon,
   Avatar,
-  Snackbar,
 } from "@material-ui/core";
 
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -30,9 +29,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ExitToApp from "@material-ui/icons/ExitToApp";
 import AssignmentInd from "@material-ui/icons/AssignmentInd";
 import Home from "@material-ui/icons/Home";
-import MuiAlert, { AlertProps } from "@material-ui/lab/Alert";
+
 import { useQuery } from "@apollo/client";
 import { IS_LOGGED_IN, LOGOUTUSER } from "../../src/queries";
+import { SnackbarMsg } from "../Snackbar/Snackbar";
 import { Login } from "../Login/Login";
 import { logout } from "../../src/utils/logout";
 import { useRouter } from "next/router";
@@ -100,9 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
+
 export const Layout = ({ children, title = "to set" }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -115,17 +113,12 @@ export const Layout = ({ children, title = "to set" }) => {
     onCompleted: ({ logOutUser }) => {
       if (logOutUser.success) {
         setOpenSnack(!openSnack);
+        router.push("/");
       }
     },
   });
   const client = useApolloClient();
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === "clickaway") {
-      return;
-    }
 
-    setOpenSnack(!openSnack);
-  };
   return (
     <div className={classes.root}>
       <AppBar
@@ -188,46 +181,46 @@ export const Layout = ({ children, title = "to set" }) => {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              setOpenDrawer(!openDrawer);
-              router.push("/profile");
-            }}
-          >
-            <ListItemIcon>
-              <AssignmentInd />
-            </ListItemIcon>
-            <ListItemText primary="My Profile" />
-          </ListItem>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              setOpenDrawer(!openDrawer);
+          {data && data.isLoggedIn && (
+            <ListItem
+              button
+              onClick={() => {
+                setOpenDrawer(!openDrawer);
+                router.push("/profile");
+              }}
+            >
+              <ListItemIcon>
+                <AssignmentInd />
+              </ListItemIcon>
+              <ListItemText primary="My Profile" />
+            </ListItem>
+          )}
 
-              logout(logOutUser, client);
-              router.push("/");
-            }}
-          >
-            <ListItemIcon>
-              <ExitToApp />
-            </ListItemIcon>
-            <ListItemText primary="Logout" />
-          </ListItem>
+          <Divider />
+          {data && data.isLoggedIn && (
+            <ListItem
+              button
+              onClick={async () => {
+                setOpenDrawer(!openDrawer);
+                await logout(logOutUser, client);
+              }}
+            >
+              <ListItemIcon>
+                <ExitToApp />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
+            </ListItem>
+          )}
         </List>
       </Drawer>
       <Login openDialog={openDialog} setOpenDialog={setOpenDialog} />
-      <Snackbar
-        open={openSnack}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-      >
-        <Alert onClose={handleClose} severity="success">
-          You have been Logged Out
-        </Alert>
-      </Snackbar>
+
+      <SnackbarMsg
+        openSnack={openSnack}
+        setOpenSnack={setOpenSnack}
+        msg="You have been Logged Out"
+        severity="info"
+      />
       <main
         className={clsx(classes.content, {
           [classes.contentShift]: openDrawer,

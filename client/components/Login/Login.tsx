@@ -1,5 +1,5 @@
 import React from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useApolloClient } from "@apollo/client";
 import {
   Button,
   Dialog,
@@ -16,6 +16,7 @@ import { TransitionProps } from "@material-ui/core/transitions";
 import { LoginForm } from "./LoginForm";
 import { isLoggedInVar } from "../../apollo/cache";
 import { LOGIN } from "../../src/queries";
+import { SnackbarMsg } from "../Snackbar/Snackbar";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -30,15 +31,17 @@ interface State {
   showPassword: boolean;
 }
 const initState = {
-  password: "",
-  email: "",
+  email: "moreira.christophe@outlook.com",
+  password: "password",
   showPassword: false,
 };
 export const Login = ({ openDialog, setOpenDialog }) => {
+  const client = useApolloClient();
   const [signIn, { error, loading }] = useMutation(LOGIN, {
     onCompleted: ({ logInUser }) => {
       localStorage.setItem("userEmail", logInUser.data.email as string);
       // userLoggedInVar(logInUser.data.email);
+      setOpenSnack(!openSnack);
       isLoggedInVar(logInUser.success);
       setOpenDialog(!openDialog);
     },
@@ -55,12 +58,13 @@ export const Login = ({ openDialog, setOpenDialog }) => {
           },
         },
       });
+      await client.resetStore();
       setValues({ ...initState });
     } catch (error) {
       console.log(error);
     }
   };
-
+  const [openSnack, setOpenSnack] = React.useState(false);
   const [values, setValues] = React.useState<State>({
     ...initState,
   });
@@ -76,35 +80,43 @@ export const Login = ({ openDialog, setOpenDialog }) => {
   };
 
   return (
-    <Dialog
-      open={openDialog}
-      TransitionComponent={Transition}
-      keepMounted
-      // onClose={() => setOpen(!open)}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
-    >
-      <DialogTitle id="alert-dialog-slide-title">
-        Enter your credentials
-      </DialogTitle>
-      <DialogContent>
-        {/* <DialogContentText id="alert-dialog-slide-description"> */}
-        <LoginForm
-          values={values}
-          handleChange={handleChange}
-          handleClickShowPassword={handleClickShowPassword}
-        />
-        {/* </DialogContentText> */}
-        {error && JSON.stringify(error)}
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setOpenDialog(!openDialog)} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="secondary">
-          {loading ? <CircularProgress size={20} /> : "Login"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <>
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        // onClose={() => setOpen(!open)}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle id="alert-dialog-slide-title">
+          Enter your credentials
+        </DialogTitle>
+        <DialogContent>
+          {/* <DialogContentText id="alert-dialog-slide-description"> */}
+          <LoginForm
+            values={values}
+            handleChange={handleChange}
+            handleClickShowPassword={handleClickShowPassword}
+          />
+          {/* </DialogContentText> */}
+          {error && JSON.stringify(error)}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(!openDialog)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} color="secondary">
+            {loading ? <CircularProgress size={20} /> : "Login"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <SnackbarMsg
+        openSnack={openSnack}
+        setOpenSnack={setOpenSnack}
+        msg="You are Logged In"
+        severity="success"
+      />
+    </>
   );
 };
