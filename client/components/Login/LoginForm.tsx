@@ -1,65 +1,29 @@
 import React from "react";
+import { InputLogin } from "./InputLogin";
+import { ButtonsSubmit } from "../ButtonsSubmit";
 
-import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
-
-import { FormControl, TextField } from "@material-ui/core/";
-
-import { PasswordInput } from "./PassordInput";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: "flex",
-      flexWrap: "wrap",
-    },
-    margin: {
-      margin: theme.spacing(1),
-    },
-    withoutLabel: {
-      marginTop: theme.spacing(3),
-    },
-    // textField: {
-    //   width: "25ch",
-    // },
-  })
-);
-
-export const LoginForm = ({
-  handleClickShowPassword,
-  values,
-  handleChange,
-}) => {
-  const classes = useStyles();
-
+export const LoginForm = ({ state, handleChange, handleSubmit, loading }) => {
+  const { email, password } = state;
   return (
-    <div className={classes.root}>
-      <FormControl
-        // className={clsx(classes.margin, classes.textField)}
-        className={classes.margin}
-        variant="outlined"
-        fullWidth
-      >
-        <TextField
-          id="email"
-          label="Email"
-          variant="outlined"
-          value={values.email}
-          onChange={handleChange("email")}
-        />
-      </FormControl>
-      <FormControl
-        // className={clsx(classes.margin, classes.textField)}
-        className={classes.margin}
-        variant="outlined"
-        fullWidth
-      >
-        <PasswordInput
-          handleClickShowPassword={handleClickShowPassword}
-          value={values.password}
-          showPassword={values.showPassword}
+    <div className="columns">
+      <div className="column"></div>
+      <div className="column is-three-quarters">
+        <InputLogin
+          name="email"
+          placeholder="e.g. alexsmith@gmail.com"
+          value={email}
           handleChange={handleChange}
         />
-      </FormControl>
+        <InputLogin
+          name="password"
+          placeholder="Password"
+          type="password"
+          value={password}
+          handleChange={handleChange}
+        />
+        <ButtonsSubmit handleSubmit={handleSubmit} loading={loading} />
+      </div>
+      <div className="column"></div>
     </div>
   );
 };

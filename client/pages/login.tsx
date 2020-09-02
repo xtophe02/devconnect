@@ -1,35 +1,24 @@
 import React from "react";
-import { useMutation } from "@apollo/client";
-import { gql } from "@apollo/client";
+import { Layout, LoginForm } from "../components";
+import { useMutation, useApolloClient } from "@apollo/client";
 import { useRouter } from "next/router";
-import { Layout, Form } from "../components";
-import { userLoggedInVar } from "../apollo/cache";
 
-const LOGIN = gql`
-  mutation LOGINUSER($data: LogInUserInput) {
-    logInUser(data: $data) {
-      success
-      data {
-        email
-        role
-      }
-      error {
-        message
-      }
-    }
-  }
-`;
+import { LOGIN } from "../src/queries";
+import { isLoggedInVar } from "../apollo/cache";
+
 const initState = {
   email: "christophe.moreira@outlook.com",
   password: "password",
 };
-const SignIn = () => {
+const Login = () => {
+  const client = useApolloClient();
   const router = useRouter();
   const [state, setState] = React.useState(initState);
-  const [signIn, { error, loading }] = useMutation(LOGIN, {
+  const [signIn, { loading, error }] = useMutation(LOGIN, {
     onCompleted: ({ logInUser }) => {
       localStorage.setItem("userEmail", logInUser.data.email as string);
-      userLoggedInVar(logInUser.data.email);
+      client.resetStore();
+      isLoggedInVar(logInUser.success);
       router.push("/");
     },
   });
@@ -47,19 +36,23 @@ const SignIn = () => {
       console.log(error);
     }
   };
-  const handleState = (e) => {
+  const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setState((prev) => ({ ...prev, [name]: value }));
   };
   return (
-    <Layout title="Sign In">
+    <Layout title="Login" subtitle="Enter your login credentials">
       <form onSubmit={handleSubmit}>
-        <Form values={state} handleChange={handleState} loading={loading} />
+        <LoginForm
+          state={state}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          loading={loading}
+        />
       </form>
-      {error && error.message}
     </Layout>
   );
 };
 
-export default SignIn;
+export default Login;

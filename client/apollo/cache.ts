@@ -9,9 +9,9 @@ export const cache: InMemoryCache = new InMemoryCache({
         isLoggedIn() {
           return isLoggedInVar();
         },
-        userLoggedIn() {
-          return userLoggedInVar();
-        },
+        // userLoggedIn() {
+        //   return userLoggedInVar();
+        // },
       },
     },
   },
@@ -22,9 +22,9 @@ export const cache: InMemoryCache = new InMemoryCache({
 //     storage: window.localStorage,
 //   });
 // }
-export const userLoggedInVar = ssrMode
-  ? null
-  : cache.makeVar<string>(localStorage.getItem("userEmail"));
+// export const userLoggedInVar = ssrMode
+//   ? null
+//   : cache.makeVar<string>(localStorage.getItem("userEmail"));
 export const isLoggedInVar = ssrMode
   ? null
   : cache.makeVar<boolean>(!!localStorage.getItem("userEmail"));
