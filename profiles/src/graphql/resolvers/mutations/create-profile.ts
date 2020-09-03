@@ -10,6 +10,7 @@ export const createProfile = async (
     if (!ctx.user) {
       throw new Error("please to signin");
     }
+
     let file;
     if (data.avatar) {
       file = await cloudinaryUpload(data.avatar);

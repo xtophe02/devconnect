@@ -1,5 +1,5 @@
 import React from "react";
-import { InputLogin } from "./InputLogin";
+import { InputValue } from "../Common/InputValue";
 import { ButtonsSubmit } from "../ButtonsSubmit";
 
 export const LoginForm = ({ state, handleChange, handleSubmit, loading }) => {
@@ -8,13 +8,13 @@ export const LoginForm = ({ state, handleChange, handleSubmit, loading }) => {
     <div className="columns">
       <div className="column"></div>
       <div className="column is-three-quarters">
-        <InputLogin
+        <InputValue
           name="email"
           placeholder="e.g. alexsmith@gmail.com"
           value={email}
           handleChange={handleChange}
         />
-        <InputLogin
+        <InputValue
           name="password"
           placeholder="Password"
           type="password"

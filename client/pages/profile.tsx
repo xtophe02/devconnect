@@ -7,7 +7,9 @@ import { redirect } from "../src/utils/redirect";
 
 const profile = () => {
   const router = useRouter();
-  const { data, loading, error } = useQuery(CURRENTUSER);
+  const { data, loading, error } = useQuery(CURRENTUSER, {
+    fetchPolicy: "network-only",
+  });
   if (data) {
     redirect(router, data.currentUser);
   }

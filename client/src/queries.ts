@@ -67,3 +67,17 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const CREATEPROFILE = gql`
+  mutation CREATEPROFILE($data: CreateProfileInput) {
+    createProfile(data: $data) {
+      success
+      data {
+        name
+      }
+      error {
+        message
+      }
+    }
+  }
+`;

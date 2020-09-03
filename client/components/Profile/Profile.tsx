@@ -1,10 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import { UserInfo } from "./UserInfo";
+import { ProfileInfo } from "./ProfileInfo";
 
 export const Profile = ({ currentUser }) => {
   const { data } = currentUser;
-  console.log(data);
-  const { email, role, invitations, createdAt, profile } = data;
+
+  const { profile } = data;
 
   return (
     <div className="tile is-ancestor">
@@ -21,59 +23,25 @@ export const Profile = ({ currentUser }) => {
           </div>
           <div className="tile is-parent is-vertical">
             <article className="tile is-child notification ">
-              {/* <p className="title">Vertical...</p> */}
-              {/* <p className="subtitle">Top tile</p> */}
-
-              <div className="content">
-                <table className="table is-narrow is-striped">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <span className="icon">
-                          <i className="fas fa-envelope"></i>
-                        </span>
-                      </td>
-                      <td>{email}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span className="icon">
-                          <i className="fas fa-user-tag"></i>
-                        </span>
-                      </td>
-                      <td>{role}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span className="icon">
-                          <i className="fas fa-list-ol"></i>
-                        </span>
-                      </td>
-                      <td>{invitations}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <span className="icon">
-                          <i className="fas fa-calendar"></i>
-                        </span>
-                      </td>
-                      <td>{createdAt.split("T")[0]}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <UserInfo data={data} />
             </article>
             <article className="tile is-child notification ">
-              <p className="content">
-                {!profile
-                  ? "...no profile, please to create your profile"
-                  : profile}
-              </p>
-              <div className="buttons has-addons is-right">
-                <Link href="/create-profile">
-                  <button className="button is-small">Create Profile</button>
-                </Link>
-              </div>
+              {!profile ? (
+                <>
+                  <div className="mb-2">
+                    ...no profile, please to create your profile
+                  </div>
+                  <div className="buttons has-addons is-right">
+                    <Link href="/create-profile">
+                      <button className="button is-small">
+                        Create Profile
+                      </button>
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <ProfileInfo profile={profile} />
+              )}
             </article>
           </div>
         </div>
