@@ -6,12 +6,14 @@ export const Skills = ({ skills }) => {
     let rowInit = 0;
     let rowEnd = 3;
     for (let index = 0; index < Math.ceil(skills.length / 3); index++) {
-      console.log("i", rowInit);
-      console.log("e", rowEnd);
       column.push(
-        <div className="column">
+        <div className="column" key={index}>
           {skills
-            .map((skill) => <div className="is-small">{skill}</div>)
+            .map((skill) => (
+              <div className="is-small" key={skill}>
+                {skill}
+              </div>
+            ))
             .slice(rowInit, rowEnd)}
         </div>
       );

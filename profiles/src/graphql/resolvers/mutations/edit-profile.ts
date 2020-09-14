@@ -14,6 +14,7 @@ export const editProfile = async (
     if (data.avatar) {
       file = await cloudinaryUpload(data.avatar);
     }
+    console.log(ctx.user.id);
     const profileUser = Profile.findOneAndUpdate(
       { userId: ctx.user.id },
       {
@@ -25,7 +26,7 @@ export const editProfile = async (
       },
       { new: true }
     );
-
+    console.log(profileUser);
     return {
       success: true,
       data: profileUser,

@@ -2,7 +2,8 @@ import gql from "graphql-tag";
 
 const typeDefs = gql`
   extend type Mutation {
-    createProfile(data: CreateProfileInput): CreaProfileResponse
+    createProfile(data: CreateProfileInput): CreateProfileResponse
+    editProfile(data: EditProfileInput): EditProfileResponse
   }
   extend type Error @key(fields: "status") @key(fields: "message") {
     message: String @external
@@ -19,7 +20,12 @@ const typeDefs = gql`
     githubUsername: String
     social: Social
   }
-  type CreaProfileResponse {
+  type CreateProfileResponse {
+    success: Boolean
+    data: Profile
+    error: Error
+  }
+  type EditProfileResponse {
     success: Boolean
     data: Profile
     error: Error
@@ -37,6 +43,18 @@ const typeDefs = gql`
     githubUsername: String
     social: SocialInput
     photoId: String
+  }
+  input EditProfileInput {
+    name: String
+    username: String
+    location: String
+    avatar: Upload
+    skills: [String]
+    githubUsername: String
+    social: SocialInput
+    photoId: String
+    password: String
+    email: String
   }
   input SocialInput {
     facebook: String

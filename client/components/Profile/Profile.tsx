@@ -2,6 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { UserInfo } from "./UserInfo";
 import { ProfileInfo } from "./ProfileInfo";
+import { Avatar } from "./Avatar";
+import { ProfileActions } from "./ProfileActions";
 
 export const Profile = ({ currentUser }) => {
   const { data } = currentUser;
@@ -13,13 +15,7 @@ export const Profile = ({ currentUser }) => {
       <div className="tile is-vertical is-8">
         <div className="tile">
           <div className="tile is-parent">
-            <article className="tile is-child notification">
-              <p className="title">Middle tile</p>
-              <p className="subtitle">With an image</p>
-              <figure className="image is-4by3">
-                <img src="https://bulma.io/images/placeholders/640x480.png" />
-              </figure>
-            </article>
+            <Avatar image={profile.avatar} />
           </div>
           <div className="tile is-parent is-vertical">
             <article className="tile is-child notification ">
@@ -46,11 +42,7 @@ export const Profile = ({ currentUser }) => {
           </div>
         </div>
         <div className="tile is-parent">
-          <article className="tile is-child notification ">
-            <p className="title">Wide tile</p>
-            <p className="subtitle">Aligned with the right tile</p>
-            <div className="content">-- Content -</div>
-          </article>
+          <ProfileActions />
         </div>
       </div>
       <div className="tile is-parent">

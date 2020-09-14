@@ -1,5 +1,5 @@
 import cloudinary from "cloudinary";
-import { createProfile } from "./mutations";
+import { createProfile, editProfile } from "./mutations";
 import { GraphQLScalarType } from "graphql";
 import { Profile } from "../../models/profile";
 
@@ -7,6 +7,7 @@ export const resolvers = {
   Query: {},
   Mutation: {
     createProfile,
+    editProfile,
   },
   User: {
     profile: async (user: any) => Profile.findOne({ userId: user.id }),

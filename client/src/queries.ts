@@ -81,3 +81,16 @@ export const CREATEPROFILE = gql`
     }
   }
 `;
+export const EDITPROFILE = gql`
+  mutation EDITPROFILE($data: EditProfileInput) {
+    editProfile(data: $data) {
+      success
+      data {
+        name
+      }
+      error {
+        message
+      }
+    }
+  }
+`;
