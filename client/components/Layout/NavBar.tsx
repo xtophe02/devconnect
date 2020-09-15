@@ -10,13 +10,7 @@ export const NavBar = () => {
   const client = useApolloClient();
   const router = useRouter();
   const { data } = useQuery(IS_LOGGED_IN);
-  const [logOutUser] = useMutation(LOGOUTUSER, {
-    onCompleted: ({ logOutUser }) => {
-      if (logOutUser.success) {
-        router.push("/");
-      }
-    },
-  });
+  const [logOutUser] = useMutation(LOGOUTUSER);
   const NavLink = ({ href, className, text, flag = false }) => {
     if (flag) return null;
 
@@ -99,7 +93,10 @@ export const NavBar = () => {
               {data && data.isLoggedIn && (
                 <a
                   className="button is-danger"
-                  onClick={() => logout(client, logOutUser)}
+                  onClick={() => {
+                    logout(client, logOutUser);
+                    router.push("/");
+                  }}
                 >
                   <strong>Log Out</strong>
                 </a>

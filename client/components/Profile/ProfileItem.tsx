@@ -9,26 +9,27 @@ export const ProfileItem = ({ text, edit, handleEdit }) => {
         </span>
       </td>
       {edit ? (
-        <div className="field">
-          <div className="control has-icons-right">
-            <input
-              className="input"
-              type="text"
-              placeholder="Text input"
-              value={text}
-            />
-            <a>
-              <span className="icon is-small is-right">
-                <i className="fas fa-check"></i>
-              </span>
-            </a>
-          </div>
-        </div>
+        <>
+          <td>
+            <input type="text" className="input" value={text} />
+          </td>
+          <td>
+            <div class="buttons has-addons">
+              <button class="button is-small">Y</button>
+
+              <button class="button is-small">N</button>
+            </div>
+          </td>
+        </>
       ) : (
         <>
           <td>{text}</td>
+
           <td>
-            <button className="button is-small is-text" onClick={handleEdit}>
+            <button
+              className="button is-small is-text"
+              onClick={() => handleEdit(!edit)}
+            >
               <span className="icon">
                 <i className="fas fa-pencil-alt"></i>
               </span>
