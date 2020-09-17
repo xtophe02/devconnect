@@ -1,14 +1,15 @@
 import React from "react";
 
-export const Skills = ({ skills }) => {
-  const columns = (skills) => {
+export const Skills = ({ skills, edit, name, handleChange }) => {
+  const showColumns = (skills) => {
+    let newArray = skills.split(" ").join("").split(",");
     let column = [];
     let rowInit = 0;
     let rowEnd = 4;
-    for (let index = 0; index < Math.ceil(skills.length / 4); index++) {
+    for (let index = 0; index < Math.ceil(newArray.length / 4); index++) {
       column.push(
         <div className="column" key={index}>
-          {skills
+          {newArray
             .map((skill) => (
               <div className="is-small" key={skill}>
                 {skill}
@@ -23,5 +24,17 @@ export const Skills = ({ skills }) => {
 
     return column;
   };
-  return <div className="columns">{columns(skills)}</div>;
+
+  if (edit) {
+    return (
+      <input
+        type="text"
+        className="input"
+        value={skills}
+        onChange={handleChange}
+        name={name}
+      />
+    );
+  }
+  return <div className="columns">{showColumns(skills)}</div>;
 };

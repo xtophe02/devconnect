@@ -3,10 +3,11 @@ import { Skills } from "./Skills";
 import { ProfileItem } from "./ProfileItem";
 
 export const ProfileInfo = ({ profile }) => {
-  const { name, username, location, githubUsername, skills, social } = profile;
-
   const [edit, setEdit] = React.useState(false);
-  const [state, setState] = React.useState(profile);
+  const [state, setState] = React.useState({
+    ...profile,
+    ["skills"]: profile.skills.join(", "),
+  });
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -151,7 +152,12 @@ export const ProfileInfo = ({ profile }) => {
                 </span>
               </td>
               <td className="is-small">
-                <Skills skills={skills} />
+                <Skills
+                  skills={state.skills}
+                  edit={edit}
+                  name="skills"
+                  handleChange={handleChange}
+                />
               </td>
             </tr>
           </tbody>

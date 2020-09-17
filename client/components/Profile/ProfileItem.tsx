@@ -9,10 +9,17 @@ export const ProfileItem = ({
 }) => {
   const mediaSocial = (name, value) => {
     if (name === "facebook") {
-      console.log(value);
+      const splitFacebook = (value) => {
+        const newValue = value.split("https://www.facebook.com/")[1];
+
+        if (!newValue) {
+          return <em>please to append 'https://www.facebook.com/'</em>;
+        }
+        return newValue;
+      };
       return (
         <a href={value} target="_blank">
-          {value.split("https://www.facebook.com/")[1]}
+          {splitFacebook(value)}
         </a>
       );
     }
