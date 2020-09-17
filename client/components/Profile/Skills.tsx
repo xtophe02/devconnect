@@ -4,8 +4,8 @@ export const Skills = ({ skills }) => {
   const columns = (skills) => {
     let column = [];
     let rowInit = 0;
-    let rowEnd = 3;
-    for (let index = 0; index < Math.ceil(skills.length / 3); index++) {
+    let rowEnd = 4;
+    for (let index = 0; index < Math.ceil(skills.length / 4); index++) {
       column.push(
         <div className="column" key={index}>
           {skills
@@ -17,8 +17,8 @@ export const Skills = ({ skills }) => {
             .slice(rowInit, rowEnd)}
         </div>
       );
-      rowInit += 3;
-      rowEnd += 3;
+      rowInit += 4;
+      rowEnd += 4;
     }
 
     return column;

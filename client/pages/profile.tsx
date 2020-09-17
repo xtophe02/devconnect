@@ -10,8 +10,12 @@ const profile = () => {
   const { data, loading, error } = useQuery(CURRENTUSER, {
     fetchPolicy: "network-only",
   });
-  if (data) {
-    redirect(router, data.currentUser);
+  // if (loading) return <p>loading...</p>;
+  // if (error) return <p>error</p>;
+  // if (!data) return <p>no data</p>;
+  if (!(data || loading)) {
+    // redirect(router, data);
+    router.push("/");
   }
 
   return (

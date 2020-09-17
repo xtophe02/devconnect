@@ -1,42 +1,45 @@
 import React from "react";
 
-export const ProfileItem = ({ text, edit, handleEdit }) => {
+export const ProfileItem = ({
+  value,
+  edit,
+  name,
+  handleChange,
+  type = "text",
+}) => {
+  const mediaSocial = (name, value) => {
+    if (name === "facebook") {
+      console.log(value);
+      return (
+        <a href={value} target="_blank">
+          {value.split("https://www.facebook.com/")[1]}
+        </a>
+      );
+    }
+    if (name === "linkedin") {
+      return (
+        <a href={value} target="_blank">
+          {value.split("https://www.linkedin.com/in/")[1]}
+        </a>
+      );
+    }
+    return value;
+  };
   return (
-    <tr>
-      <td>
-        <span className="icon">
-          <i className="fas fa-signature"></i>
-        </span>
-      </td>
+    <>
       {edit ? (
-        <>
-          <td>
-            <input type="text" className="input" value={text} />
-          </td>
-          <td>
-            <div class="buttons has-addons">
-              <button class="button is-small">Y</button>
-
-              <button class="button is-small">N</button>
-            </div>
-          </td>
-        </>
+        <td>
+          <input
+            type={type}
+            className="input"
+            value={value}
+            name={name}
+            onChange={handleChange}
+          />
+        </td>
       ) : (
-        <>
-          <td>{text}</td>
-
-          <td>
-            <button
-              className="button is-small is-text"
-              onClick={() => handleEdit(!edit)}
-            >
-              <span className="icon">
-                <i className="fas fa-pencil-alt"></i>
-              </span>
-            </button>
-          </td>
-        </>
+        <td>{mediaSocial(name, value)}</td>
       )}
-    </tr>
+    </>
   );
 };

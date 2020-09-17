@@ -7,7 +7,6 @@ import { ProfileActions } from "./ProfileActions";
 
 export const Profile = ({ currentUser }) => {
   const { data } = currentUser;
-
   const { profile } = data;
 
   return (
