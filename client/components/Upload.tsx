@@ -1,9 +1,10 @@
 import React from "react";
 
-export const Upload = ({ handleFile, avatar }) => {
+export const Upload = ({ handleFile, avatar, edit = false }) => {
   return (
     <div className="field">
-      <label className="label">Avatar Image</label>
+      {!edit && <label className="label">Avatar Image</label>}
+
       <div className="control file has-name is-fullwidth">
         <label className="file-label">
           <input
@@ -18,7 +19,7 @@ export const Upload = ({ handleFile, avatar }) => {
             </span>
             <span className="file-label">Choose an Image...</span>
           </span>
-          <span className="file-name">{avatar && avatar.name}</span>
+          {!edit && <span className="file-name">{avatar && avatar.name}</span>}
         </label>
       </div>
     </div>

@@ -17,7 +17,7 @@ export const editProfile = async (
       newData = { ...data, photoId: file.photoId, avatar: file.url };
     }
 
-    const profileUser = Profile.findOneAndUpdate(
+    const profileUser = await Profile.findOneAndUpdate(
       { userId: ctx.user.id },
       {
         $set: {

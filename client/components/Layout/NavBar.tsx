@@ -78,13 +78,6 @@ export const NavBar = () => {
           <div className="navbar-item">
             <div className="buttons">
               <NavLink
-                href="/create-user"
-                text="Create User"
-                className="button is-link"
-                flag={data && !data.isLoggedIn}
-              />
-
-              <NavLink
                 href="/login"
                 className="button is-primary"
                 text="Log In"
@@ -92,9 +85,9 @@ export const NavBar = () => {
               />
               {data && data.isLoggedIn && (
                 <a
-                  className="button is-danger"
-                  onClick={() => {
-                    logout(client, logOutUser);
+                  className="button is-danger is-light"
+                  onClick={async () => {
+                    await logout(client, logOutUser);
                     router.push("/");
                   }}
                 >
