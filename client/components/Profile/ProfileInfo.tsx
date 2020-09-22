@@ -1,14 +1,25 @@
 import React from "react";
 import { Skills } from "./Skills";
 import { ProfileItem } from "./ProfileItem";
+import { EDITPROFILE } from "../../src/queries";
+import { useMutation } from "@apollo/client";
+
+const objDiff = (o1, o2) => {
+  let diff = Object.keys(o2).reduce((diff, key) => {
+    if (o1[key] === o2[key]) return diff;
+    return {
+      ...diff,
+      [key]: o2[key],
+    };
+  }, {});
+  return diff;
+};
 
 export const ProfileInfo = ({ profile }) => {
+  const initValues = { ...profile, ["skills"]: profile.skills.join(", ") };
   const [edit, setEdit] = React.useState(false);
-  const [state, setState] = React.useState({
-    ...profile,
-    ["skills"]: profile.skills.join(", "),
-  });
-
+  const [state, setState] = React.useState(initValues);
+  const [editProfile, { loading }] = useMutation(EDITPROFILE);
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -22,6 +33,30 @@ export const ProfileInfo = ({ profile }) => {
 
     setState((prev) => ({ ...prev, [name]: value }));
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    let onlyDiff = objDiff(initValues, state);
+
+    if (onlyDiff.skills) {
+      onlyDiff = {
+        ...onlyDiff,
+        skills: onlyDiff.skills.split(" ").join("").split(","),
+      };
+    }
+    setEdit(!edit);
+    try {
+      await editProfile({
+        variables: {
+          data: {
+            ...onlyDiff,
+          },
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="title is-4">
@@ -33,8 +68,8 @@ export const ProfileInfo = ({ profile }) => {
             <div className="level-item">
               {edit ? (
                 <button
-                  className="button is-primary"
-                  onClick={() => setEdit(!edit)}
+                  className={`button is-primary ${loading && "is-loading"}`}
+                  onClick={handleSubmit}
                 >
                   Save
                 </button>

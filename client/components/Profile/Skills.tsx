@@ -2,7 +2,15 @@ import React from "react";
 
 export const Skills = ({ skills, edit, name, handleChange }) => {
   const showColumns = (skills) => {
+    if (skills.length <= 0) {
+      return (
+        <div className="column">
+          <em>to fill the {name}</em>
+        </div>
+      );
+    }
     let newArray = skills.split(" ").join("").split(",");
+
     let column = [];
     let rowInit = 0;
     let rowEnd = 4;

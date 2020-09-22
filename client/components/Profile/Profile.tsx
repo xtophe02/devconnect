@@ -14,7 +14,13 @@ export const Profile = ({ currentUser }) => {
       <div className="tile is-vertical is-8">
         <div className="tile">
           <div className="tile is-parent">
-            <Avatar image={profile.avatar} />
+            <Avatar
+              image={
+                profile && profile.avatar
+                  ? profile.avatar
+                  : "/avatar/avatar.gif"
+              }
+            />
           </div>
           <div className="tile is-parent is-vertical">
             <article className="tile is-child notification ">

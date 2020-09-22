@@ -10,23 +10,23 @@ export const editProfile = async (
     if (!ctx.user) {
       throw new Error("please to signin");
     }
-    let file;
+
+    let newData = data;
     if (data.avatar) {
-      file = await cloudinaryUpload(data.avatar);
+      const file = await cloudinaryUpload(data.avatar);
+      newData = { ...data, photoId: file.photoId, avatar: file.url };
     }
-    console.log(ctx.user.id);
+
     const profileUser = Profile.findOneAndUpdate(
       { userId: ctx.user.id },
       {
         $set: {
-          ...data,
-          photoId: file ? file.photoId : "",
-          avatar: file ? file.url : "",
+          ...newData,
         },
       },
       { new: true }
     );
-    console.log(profileUser);
+
     return {
       success: true,
       data: profileUser,

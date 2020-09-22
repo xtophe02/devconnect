@@ -3,6 +3,7 @@ const ssrMode = typeof window === "undefined";
 // import { persistCache } from "apollo-cache-persist";
 
 export const cache: InMemoryCache = new InMemoryCache({
+  addTypename: false,
   typePolicies: {
     Query: {
       fields: {
