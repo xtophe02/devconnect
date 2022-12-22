@@ -27,7 +27,7 @@
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "graphql-middleware": "^4.0.2",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mkdirp": "^1.0.4",
     "mongoose": "^5.9.25",
     "mongoose-update-if-current": "^1.4.0",
